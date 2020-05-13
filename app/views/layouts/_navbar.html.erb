@@ -1,0 +1,22 @@
+<header class="mb-4">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Kanji</a>
+    <!-- 横幅が狭い時に出るハンバーガーボタン -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- メニュー項目 -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <% if logged_in? %>
+        <li class="nav-item"><%= link_to  'タスクを追加', new_question_path, class: 'nav-link' %></li>
+        <li class="nav-item"><%= link_to  'Log out', logout_path, method: :delete, class: 'nav-link' %></li>
+        <% else %>
+        <li class="nav-item"><%= link_to  'Sign up', signup_path, class: 'nav-link' %></li>
+        <li class="nav-item"><%= link_to  'Log in', login_path, class: 'nav-link' %></li>
+        <% end %>
+      </ul>
+    </div>
+  </nav>
+</header>

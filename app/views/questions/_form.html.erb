@@ -1,0 +1,35 @@
+
+<%= form_with(model: question, local: true) do |f| %>
+    <% if question.errors.any? %>
+    
+        <div id="error_explanation">
+          <ul>
+            
+            <% question.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+            <% end %>
+    
+          </ul>
+        </div>
+      
+    <% end %>
+
+
+    <%= f.label :ex_top, '例文（前）' %>
+    <%= f.text_field :ex_top %>
+    <%= f.label :kanji, '漢字' %>
+    <%= f.text_field :kanji %>
+    <%= f.label :ex_buttom, '例文（後）' %>
+    <%= f.text_field :ex_buttom %>
+    <%= f.label :yomi, '読み' %>
+    <%= f.text_field :yomi %>
+    <%= f.label :meaning, '意味' %>
+    <%= f.text_field :meaning %>
+    <%= f.label :category, 'タイプ' %>
+    <%= f.select :category, Question.categories.keys, :selected=>Question.categories[question.category] %>
+    <%= f.label :level, '級' %>
+    <%= f.select :level, Question.levels.keys, :selected=>Question.levels[question.level] %>
+    
+    <%= f.submit '追加' %>
+    
+<% end %>

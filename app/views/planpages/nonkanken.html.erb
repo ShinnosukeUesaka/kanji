@@ -1,0 +1,67 @@
+<h1>Planpages#nonkankenplan</h1>
+<p>Find me in app/views/planpages/nonkankenplan.html.erb</p>
+
+<%= form_with url: plan_explanation_path do |f| %>
+    
+<% 
+=begin
+%>
+    <% if question.errors.any? %>
+    
+        <div id="error_explanation">
+          <ul>
+            
+            <% question.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+            <% end %>
+    
+          </ul>
+        </div>
+    <% end %>
+<% 
+=end
+%>
+    <%#= https://medium.com/@mindovermiles262/triple-nested-forms-in-rails-dedbcccb5799 %>
+    <%= f.label :kanken_day, '実施日:' %>
+    <%= f.date_field :ex_top %>
+    <%= f.label :kanken_level, '級' %>
+    <%= f.select :kanken_level, User.kanken_levels.keys, :selected=>User.kanken_levels[current_user.kanken_level] %>
+    
+    <br>
+    <%= f.fields_for :studysets do |s| %>
+      <%= s.fields_for :level0, Studyset do |l| %>
+        <%= hidden_field_tag :level, 0 %>
+        <%= hidden_field_tag :active, true %>
+        <%= f.label :create, '一級' %>
+        <%= s.check_box :create, {:checked => true}, "true", "false" %>
+        
+        <%= f.label :active, '読み' %>
+        <%= s.check_box :yomi, {:checked => true}, "true", "false" %>
+        <%= f.label :active, '書き' %>
+        <%= s.check_box :yomi, {:checked => true},"true", "false" %>
+        <%= f.label :active, '読み' %>
+        <%= s.check_box :yomi, {:checked => true}, "true", "false" %>
+      <% end %>
+      <br>
+      <%= s.fields_for :level1, Studyset do |l| %>
+        <%= hidden_field_tag :level, 1 %>
+        <%= hidden_field_tag :active, true %>
+        <%= f.label :create, '準一級' %>
+        <%= s.check_box :create, {:checked => true}, "true", "false" %>
+        
+        <%= f.label :active, '読み' %>
+        <%= s.check_box :yomi, {:checked => true}, "true", "false" %>
+        <%= f.label :active, '書き' %>
+        <%= s.check_box :yomi, {:checked => true},"true", "false" %>
+        <%= f.label :active, '読み' %>
+        <%= s.check_box :yomi, {:checked => true}, "true", "false" %>
+      <% end %>
+    <% end %>
+    <br>
+    <%= f.fields_for :setting do |s| %>
+    <%= f.submit '追加' %>
+<% end %>
+<% end %>
+  
+    
+  

@@ -1,0 +1,19 @@
+<h1>問題一覧</h1>
+
+<ul>
+  
+<% @questions.each do |question| %>
+
+    <li>
+<%= link_to question.id, question %>
+:
+<%= question.kanji %>
+
+<%= question.yomi %>
+</li>
+  
+<% end %>
+
+</ul>
+<%= render 'form', question: Question.new %>
+<%#= link_to '新規メッセージの投稿', new_message_path %>

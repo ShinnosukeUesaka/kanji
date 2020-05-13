@@ -1,0 +1,11 @@
+
+<div class='text-center'> 
+    <h1><%= @user.name %>'s page </h1>
+    Users#show
+</div>
+
+<p>Age: <%= @user.age %></p>
+<p>Number of tasks: <%#= @user. %></p>
+<%#= link_to 'My Tasks', tasks_path %>
+<br>
+<%= link_to '退会', user_path, method: 'delete', data: { confirm: "You sure?" }%>

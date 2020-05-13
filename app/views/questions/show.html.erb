@@ -1,0 +1,16 @@
+<h1>id: 
+<%= @question.id %>
+ のメッセージ詳細ページ</h1>
+
+<p>漢字:
+<%= @question.kanji %>
+</p>
+<p>読み:
+<%= @question.yomi %>
+</p>
+
+<%#= link_to '一覧に戻る', questions_path %>
+
+<%= render 'form', question: @question %>
+
+<%= link_to 'この問題を削除する', @question, method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %>
