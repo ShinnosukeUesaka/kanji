@@ -24,7 +24,7 @@ class PlanpagesController < ApplicationController
     current_user.studyset do |set|
       questions = Qustion.where(level: set.level).pluck(:id)
       questions do |question|
-        progress  = question.progress.build.new(user_id: current_user.id, progress_params)
+        progress  = question.progress.build.new(user_id: current_user.id, kaki: set.kaki, yomi: set.yomi, yoji: set.yoji)
         progress.save
     end
     
@@ -49,6 +49,10 @@ class PlanpagesController < ApplicationController
   
   def level_params
     params.require(:studysets).permit()
+  end
+  
+  def progress_params
+    params.require(:)
   end
   
   def setting_params

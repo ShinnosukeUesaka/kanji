@@ -35,12 +35,12 @@
         <%= f.label :create, '一級' %>
         <%= s.check_box :create, {:checked => true}, "true", "false" %>
         
-        <%= f.label :active, '読み' %>
+        <%= f.label :yomi, '読み' %>
         <%= s.check_box :yomi, {:checked => true}, "true", "false" %>
-        <%= f.label :active, '書き' %>
-        <%= s.check_box :yomi, {:checked => true},"true", "false" %>
-        <%= f.label :active, '読み' %>
-        <%= s.check_box :yomi, {:checked => true}, "true", "false" %>
+        <%= f.label :kaki, '書き' %>
+        <%= s.check_box :kaki, {:checked => true},"true", "false" %>
+        <%= f.label :yoji, '四字熟語' %>
+        <%= s.check_box :yoji, {:checked => true}, "true", "false" %>
       <% end %>
       <br>
       <%= s.fields_for :level1, Studyset do |l| %>

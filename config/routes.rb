@@ -1,17 +1,12 @@
 Rails.application.routes.draw do
-  get 'sessions/new'
-  get 'sessions/create'
-  get 'sessions/destroy'
-  get 'users/index'
-  get 'users/show'
-  get 'users/new'
-  get 'users/create'
-  get 'top/index'
+  
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'top#index'
+  get 'top/index'
   
-  #scope :admin/ 
-  resources :questions
+  
+  
+ 
   
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
@@ -29,7 +24,10 @@ Rails.application.routes.draw do
   
   
   
+   #scope :admin/ 
+  resources :questions
   
-  resources :users, only: [:index, :show, :new, :create, :destroy]
+  resources :sessions, only: [:new, :create, :destroy]
+  resources :users, only: [:index, :show, :create, :destroy]
   
 end
