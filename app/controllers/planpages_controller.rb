@@ -14,19 +14,24 @@ class PlanpagesController < ApplicationController
   end
 
   def explanation
-    params[:studysets] do |set|
-      if set[:create] == "true"
-        @study_set = current_user.studyset.build(set.permit(:level, :yomi, :kaki, :yoji))
+    params.permit
+    p params[:studysets][:"1"]
+    params[:studysets].each do |level, set_params|
+      p set_params[:create]
+      if set_params[:create] == "true"
+        @study_set = current_user.studysets.build(set_params.permit(:level, :active, :kaki_active, :yomi_active, :yoji_active, :study_began_on))
         @study_set.save
       end
     end
     
-    current_user.studyset do |set|
+    current_user.studysets do |set|
       questions = Qustion.where(level: set.level).pluck(:id)
       questions do |question|
         progress  = question.progress.build.new(user_id: current_user.id, kaki: set.kaki, yomi: set.yomi, yoji: set.yoji)
         progress.save
+      end
     end
+  end
     
     render action: :explanation
 =begin
@@ -42,7 +47,6 @@ class PlanpagesController < ApplicationController
       @micropost.save
     end
 =end
-  end
   
   
   private
@@ -51,17 +55,21 @@ class PlanpagesController < ApplicationController
     params.require(:studysets).permit()
   end
   
-  def progress_params
-    params.require(:)
+  def level_params
   end
-  
+=begin
+  def progress_params
+    params.require(:test)
+  end
+
   def setting_params
   end
   
   def studyset_params
   end
-  
+=end
   def get_problems_id(level)
     Qustion.where(level: level).pluck(:id)
   end
+  
 end
