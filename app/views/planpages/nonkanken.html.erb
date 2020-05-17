@@ -1,3 +1,7 @@
+
+
+
+
 <h1>Planpages#nonkankenplan</h1>
 <p>Find me in app/views/planpages/nonkankenplan.html.erb</p>
 
@@ -21,15 +25,16 @@
 <% 
 =end
 %>
+    
     <%#= 
     多重ネスト（fields for）
     https://medium.com/@mindovermiles262/triple-nested-forms-in-rails-dedbcccb5799 
     #フォームで配列
     https://qiita.com/roba4coding/items/c2bcd51d1d4200dd26d9
     #enum 日本語
-    https://kimuraysp.hatenablog.com/entry/2016/05/19/233144
-    
+    https://kimuraysp.hatenablog.com/entry/2016/05/19/233144 
     %>
+    
     <%= f.label :kanken_day, '実施日:' %>
     <%= f.date_field :kanken_day %>
     <%= f.label :kanken_level, '級' %>
@@ -38,7 +43,7 @@
     <br>
     <%= f.fields_for :studysets do |s| %>
       <% User.kanken_levels.each do |lev_name, lev_num| %>
-        <%= s.fields_for Studyset do |l| %>
+        <%= s.fields_for Studyset.create do |l| %>
           <%= hidden_field_tag :level, lev_num, name: "studysets[#{lev_num}][level]" %>
           <%= hidden_field_tag :active, true, name: "studysets[#{lev_num}][active]"%>
           
@@ -55,10 +60,23 @@
       <% end %>
     <% end %>
     <br>
-    <%= f.fields_for :setting do |s| %>
+    <h2>詳細設定</h2> <%#=TODO 折り畳たまれた状態から展開しないと表示されないようにする %>
+    <%= f.fields_for Setting.create do |s| %>
+      <%= s.label :max_new_questions, "１日の最大新規問題数" %>
+      <%= s.select :max_new_questions, 1..50 %>
+      <%= s.label :max_total_questions, "１日の最大合計問題数" %>
+      <%= s.select :max_total_questions, 1..50 %> <%#=TODO max_new_questions 以上しか選択できないようにする %>
+      <%= s.label :init_e_factor, "復習頻度" %>
+      <%= s.select :init_e_factor, {"少ない" => 200, "普通" => 250,"多い" => 300 } %>
+      <%= s.label :auto_init_e_factor, "復習頻度自動調整" %>
+      <%= s.check_box :auto_init_e_factor, {}, "true", "false" %>
+    <% end %>
+
     <%= f.submit '追加' %>
-<% end %>
+
 <% end %>
   
     
+  
+  
   

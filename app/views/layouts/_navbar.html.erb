@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
       <ul class="navbar-nav">
         <% if logged_in? %>
-        <li class="nav-item"><%= link_to  'タスクを追加', new_question_path, class: 'nav-link' %></li>
+        <li class="nav-item"><%= link_to  '問題を追加（管理者用）', new_question_path, class: 'nav-link' %></li>
         <li class="nav-item"><%= link_to  'Log out', logout_path, method: :delete, class: 'nav-link' %></li>
         <% else %>
         <li class="nav-item"><%= link_to  'Sign up', signup_path, class: 'nav-link' %></li>

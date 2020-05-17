@@ -30,7 +30,8 @@ module Kanji
     # config/locales/配下の全てのrb, ymlファイルを読み込み対象とする
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
     
-    
+    # ログ　https://qiita.com/tomoharutt/items/b9abe18b531034b10e8f
+    #config.logger = Logger.new(STDOUT)
     
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

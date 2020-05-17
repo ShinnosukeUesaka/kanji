@@ -6,7 +6,7 @@ class Question < ApplicationRecord
   
   validates :category, presence: true
   validates :level, presence: true
-  validates :kanji, presence: true, length: { maximum: 10 }
+  validates :kanji, presence: true, length: { maximum: 10 }, uniqueness: { scope: [:ex_top, :ex_bottom] }
   validates :yomi, presence: true, length: { maximum: 10 }
   
   attribute :meaning, :string,  default: ''

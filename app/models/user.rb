@@ -11,9 +11,9 @@ class User < ApplicationRecord
   
   enum usertype: { normal: 0, auth: 1}
   
-  has_one :setting
-  has_many :studysets
-  has_many :progresses
+  has_one :setting, dependent: :destroy #??
+  has_many :studysets, dependent: :destroy
+  has_many :progresses, dependent: :destroy
   
   has_many :active_progresses, -> { where(active: true) }, class_name: "Progress"
   has_many :due_progresses, -> { where(active: true).where(is_due: true) }, class_name: "Progress"

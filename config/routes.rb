@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   
   
   
-   #scope :admin/ 
+  #scope :admin/ 
   resources :questions
   
   resources :sessions, only: [:new, :create, :destroy]

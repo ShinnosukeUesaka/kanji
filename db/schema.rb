@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_13_000001) do
+ActiveRecord::Schema.define(version: 2020_05_16_125250) do
 
   create_table "progresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -20,11 +20,13 @@ ActiveRecord::Schema.define(version: 2020_05_13_000001) do
     t.boolean "learning_mode"
     t.integer "learning_mode_n"
     t.integer "e_factor"
-    t.string "intervals"
     t.boolean "is_due"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "due_date"
+    t.date "previous_due_date"
     t.index ["question_id"], name: "index_progresses_on_question_id"
+    t.index ["user_id", "question_id"], name: "index_progresses_on_user_id_and_question_id", unique: true
     t.index ["user_id"], name: "index_progresses_on_user_id"
   end
 
@@ -35,15 +37,16 @@ ActiveRecord::Schema.define(version: 2020_05_13_000001) do
     t.string "yomi"
     t.string "meaning"
     t.string "ex_top"
-    t.string "ex_buttom"
+    t.string "ex_bottom"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["kanji", "ex_top", "ex_bottom"], name: "index_questions_on_kanji_and_ex_top_and_ex_bottom", unique: true
   end
 
   create_table "settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
     t.integer "init_e_factor"
-    t.boolean "auto_init_factor"
+    t.boolean "auto_init_e_factor"
     t.string "first_intervals"
     t.integer "max_new_questions"
     t.integer "max_total_questions"
@@ -62,6 +65,7 @@ ActiveRecord::Schema.define(version: 2020_05_13_000001) do
     t.boolean "yoji_active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "level"], name: "index_studysets_on_user_id_and_level", unique: true
     t.index ["user_id"], name: "index_studysets_on_user_id"
   end
 
