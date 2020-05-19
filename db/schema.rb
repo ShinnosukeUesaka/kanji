@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_16_125250) do
+ActiveRecord::Schema.define(version: 2020_05_19_124133) do
 
   create_table "progresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -20,11 +20,13 @@ ActiveRecord::Schema.define(version: 2020_05_16_125250) do
     t.boolean "learning_mode"
     t.integer "learning_mode_n"
     t.integer "e_factor"
-    t.boolean "is_due"
+    t.boolean "show"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "due_date"
     t.date "previous_due_date"
+    t.integer "answer"
+    t.integer "interval_after_learning_mode"
     t.index ["question_id"], name: "index_progresses_on_question_id"
     t.index ["user_id", "question_id"], name: "index_progresses_on_user_id_and_question_id", unique: true
     t.index ["user_id"], name: "index_progresses_on_user_id"
