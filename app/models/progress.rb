@@ -37,7 +37,8 @@ class Progress < ApplicationRecord
         self.interval_after_learning_mode = (previous_interval*next_e_factor).floor
         self.learning_mode = true
         self.learning_mode_n = 0
-        next_interval = 
+        next_interval = self.user.learning_mode_intervals[0]
+        
       when 'hard' then
         new_interval = [(previous_interval*1.2).floor, previous_interval + 1].max # all new intervals (except Again) will always be at least one day longer than the previous interval.
         next_e_factor = [self.e_factor -= 15, LOWEST_E_FACTOR].max

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_19_124133) do
+ActiveRecord::Schema.define(version: 2020_05_19_125926) do
 
   create_table "progresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 2020_05_19_124133) do
     t.bigint "user_id"
     t.integer "init_e_factor"
     t.boolean "auto_init_e_factor"
-    t.string "first_intervals"
+    t.string "learning_mode_intervals"
     t.integer "max_new_questions"
     t.integer "max_total_questions"
     t.datetime "created_at", null: false
