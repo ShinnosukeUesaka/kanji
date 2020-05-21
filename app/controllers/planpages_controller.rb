@@ -16,7 +16,7 @@ class PlanpagesController < ApplicationController
   def explanation
     
     # user.settingの作成
-    @setting = current_user.build_setting(params.require(:setting).permit(:max_new_questions, :max_total_questions, :init_e_factor, :auto_init_e_factor))
+    @setting = current_user.build_setting(params.require(:setting).permit(:max_new_questions, :max_total_questions, :init_e_factor, :auto_init_e_factor, :learning_mode_intervals))
     @setting.save
     
     # user.studysets の作成
