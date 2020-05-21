@@ -28,7 +28,7 @@ class Progress < ApplicationRecord
     previous_interval = (self.previous_due_date..self.due_date)*count
     
     if self.learning_mode == true #初期学習 or 間違えて学び直しの場合
-    
+      
     else #普通の復習の場合
       case self.answer 
       when 'again' or 'good_after_again' then
