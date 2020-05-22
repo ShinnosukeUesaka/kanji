@@ -27,6 +27,13 @@ class SessionsController < ApplicationController
     if @user && @user.authenticate(password)
       # ログイン成功
       session[:user_id] = @user.id
+      
+      #その日の問題を設定
+      if @user.active_today = false
+        @user.set_daily_show_questions
+        @user.active_today = true
+      end
+      
       return true
     else
       # ログイン失敗

@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'top#index'
+  
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  
   get 'top/index'
   
   
@@ -21,6 +23,10 @@ Rails.application.routes.draw do
   get 'plan/kanken', to: 'planpages#kanken'
   get 'plan/levels', to: 'planpages#nonkanken'
   post 'plan/explanation', to: 'planpages#explanation'
+  
+  get 'quiz/question'
+  post 'quiz/answer'
+  get 'quiz/finished'
   
   
   

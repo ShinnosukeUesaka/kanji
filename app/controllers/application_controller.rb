@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def require_user_auth
+  def require_user_admin
     unless current_user.usertype == "auth"
       redirect_to login_path
     end

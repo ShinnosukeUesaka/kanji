@@ -30,8 +30,8 @@ class User < ApplicationRecord
   
   #https://qiita.com/QUANON/items/a58ff3960b43af472bfb
   
-  #when user login(only once a day) doesn't have to be everyday
-  def update_daily_show_questions()
+  #when user logs in(only once a day) doesn't have to be everyday
+  def set_daily_show_questions()
     show_progresses = []
     
     if self.setting.max_total_questions == null
@@ -55,10 +55,10 @@ class User < ApplicationRecord
       end
     
     
-    show_progresses.map {|question| question.show = true}
+    show_progresses.map {|progress| progress.show = true}
     
   end
-  
+  ]
   #on nights when user logged in 
   def update_progresses()
     self.show_progresses.each do |progress|
