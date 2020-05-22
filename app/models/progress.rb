@@ -12,8 +12,6 @@ class Progress < ApplicationRecord
   attribute :category, :integer,  default: 0
   attribute :active, :boolean,  default: true
   attribute :show,        :boolean, default: false
-  attribute :due_date,        :date, default: null
-  attribute :previous_due_date,        :date, default: null
   attribute :learning_mode,        :boolean, default: true
   attribute :learning_mode_n,        :integer, default: 0
   
@@ -28,10 +26,15 @@ class Progress < ApplicationRecord
     # next_interval 次の復習間隔（日数）
     # これらをユーザーのリスポンスから設定
     # due_date を next_interval から計算
-    EASY_BONUS = 1.2
-    LOWEST_E_FACTOR = 130
-    previous_interval = (self.previous_due_date..self.due_date).count
+
+    # ユーザーが問題に答えなかった場合は何もしない
+    if self.answer == nil
+      return
+    end
     
+    
+    
+    previous_interval = (self.previous_due_date..self.due_date).count
     
     if self.learning_mode == true #初期学習 or 間違えて学び直しの場合
       self.learning_mode_n += 1
@@ -46,36 +49,49 @@ class Progress < ApplicationRecord
         next_e_factor = self.e_factor
         next_interval = self.user.setting.learning_mode_intervals[self.learning_mode_n]
       end
-      
-      
+
     else #普通の復習の場合
       case self.answer 
-        when 'again' or 'good_after_again' then
-          next_e_factor = [self.e_factor - 20, LOWEST_E_FACTOR].max
-          # learning_mode の設定
-          self.interval_after_learning_mode = (previous_interval*next_e_factor).floor
-          self.learning_mode = true
-          self.learning_mode_n = 0
-          next_interval = self.user.setting.learning_mode_intervals[self.learning_mode_n]
-          
-        when 'hard' then
-          new_interval = [(previous_interval*1.2).floor, previous_interval + 1].max # all new intervals (except Again) will always be at least one day longer than the previous interval.
-          next_e_factor = [self.e_factor - 15, LOWEST_E_FACTOR].max
-        when 'good' then
-          new_interval = [(previous_interval*decimal_efactor).floor,previous_interval + 1].max 
-          next_e_factor = self.e_factor
-        when 'easy' then 
-          new_interval = [(previous_interval*decimal_efactor*EASY_BONUS).floor, previous_interval + 1].max
-          next_e_factor += 15
-        #else でちゃんとエラー処理
-      end
+      when 'again', 'good_after_again' then
+        next_e_factor = [self.e_factor - 20, Settings.minimum_e_factor].max
+        # learning_mode の設定
+        self.interval_after_learning_mode = (previous_interval*next_e_factor).floor
+        self.learning_mode = true
+        self.learning_mode_n = 0
+        next_interval = self.user.setting.learning_mode_intervals[self.learning_mode_n]
+        
+      when 'hard' then
+        new_interval = [(previous_interval*1.2).floor, previous_interval + 1].max # all new intervals (except Again) will always be at least one day longer than the previous interval.
+        next_e_factor = [self.e_factor - 15, Settings.minimum_e_factor].max
+      when 'good' then
+        new_interval = [(previous_interval*decimal_efactor).floor,previous_interval + 1].max 
+        next_e_factor = self.e_factor
+      when 'easy' then 
+        new_interval = [(previous_interval*decimal_efactor*Settings.Settings.easy_bonus).floor, previous_interval + 1].max
+        next_e_factor += 15
+    
     end
+    
+    
+    set_category(next_interval)
     
     self.e_factor = next_e_factor
     self.previous_due_date = self.due_date
     self.due_date = self.due_date + next_interval
     self.answer = nil
+    
+    
+    
+    
   end
   
+  
+  def set_category(interval)
+    case interval
+    when 0..21 then
+      self.category = 'young'
+    else
+      self.category = 'matyre'
+  end
   
 end

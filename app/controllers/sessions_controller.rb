@@ -29,7 +29,7 @@ class SessionsController < ApplicationController
       session[:user_id] = @user.id
       
       #その日の問題を設定
-      if @user.active_today = false
+      if @user.active_today == false
         @user.set_daily_show_questions
         @user.active_today = true
       end

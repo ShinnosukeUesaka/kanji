@@ -11,7 +11,7 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   has_secure_password
   
-  enum usertype: { normal: 0, auth: 1}
+  enum usertype: { normal: 0, admin: 1}
   
   has_one :setting, dependent: :destroy #??
   has_many :studysets, dependent: :destroy
@@ -21,10 +21,9 @@ class User < ApplicationRecord
   has_many :show_progresses, -> { where(active: true).where(show: true) }, class_name: "Progress"
   has_many :is_due_progresses, -> { where(active: true).where(due_date: Date.today) }, class_name: "Progress"
   has_many :questions, through: :progresses
-  has_many :active_questions, through: :active_progresses, source: :questions
-  has_many :show_questions, through: :show_progresses, source: :questions
-  has_many :is_due_questions, through: :is_due_progresses, source: :questions
-  
+  has_many :active_questions, through: :active_progresses, source: :question
+  has_many :show_questions, through: :show_progresses, source: :question
+  has_many :is_due_questions, through: :is_due_progresses, source: :question
   
   
   
@@ -41,6 +40,7 @@ class User < ApplicationRecord
       show_progresses << self.is_due_progresses.where.not(categoery: 'new')
       show_progresses << self.is_due_progresses.where(categoery: 'new').limit(self.setting.max_new_questions)
     else
+      
       #１日の最大合計問題数を設定した場合：
       #新規問題より期日の復習問題を優先して出題し、１日の最大合計数を超える問題については次の日に回す。
       #つまり、、、
@@ -53,12 +53,13 @@ class User < ApplicationRecord
       else
         show_progresses << self.is_due_progresses.where.not(categoery: 'new').limit(self.setting.max_total_questions)
       end
+    end
     
     
     show_progresses.map {|progress| progress.show = true}
     
   end
-  ]
+  
   #on nights when user logged in 
   def update_progresses()
     self.show_progresses.each do |progress|

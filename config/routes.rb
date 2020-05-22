@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
-  
-  root 'top#index'
-  
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  
+  root 'usertop#main'
   
   get 'top/index'
   
-  
+  get 'top', to: 'usertop/main'
+  get  'setting' to: 'usertop/setting'
   
  
   
@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   post 'plan/explanation', to: 'planpages#explanation'
   
   get 'quiz/question'
-  post 'quiz/answer'
+  post 'quiz/answer', to: 'quiz#answerpage'
   get 'quiz/finished'
   
   
