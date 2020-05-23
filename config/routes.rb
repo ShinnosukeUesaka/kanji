@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   
   get 'top/index'
   
-  get 'top', to: 'usertop/main'
-  get  'setting' to: 'usertop/setting'
+  get 'top', to: 'usertop#main'
+  get  'setting', to: 'usertop#setting'
   
  
   

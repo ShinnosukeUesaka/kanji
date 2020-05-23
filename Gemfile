@@ -44,6 +44,7 @@ gem 'rails-i18n'
 gem 'activerecord-import'
 gem 'jquery-rails'
 gem 'settingslogic'
+gem 'whenever', require: false
 
 
 group :development, :test do
