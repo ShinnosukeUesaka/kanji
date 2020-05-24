@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :require_user_auth
+  before_action :require_user_admin
   before_action :set_question, only: [:show, :edit, :update, :destroy]
   
   def index
@@ -16,7 +16,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(question_params)
-
+    
     if @question.save
       flash[:success] = '作成完了'
       redirect_to @question
@@ -55,7 +55,6 @@ class QuestionsController < ApplicationController
   def check_auth
     current
   end
-  
   
   def question_params
     params.require(:question).permit(:ex_top, :kanji, :ex_buttom, :yomi, :meaning, :category, :level)

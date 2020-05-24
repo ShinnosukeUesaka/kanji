@@ -5,8 +5,8 @@ class UsersController < ApplicationController
   
   def new
     @user = User.new
-   
   end
+
 
   def create
     @user = User.new(user_params)
@@ -19,9 +19,11 @@ class UsersController < ApplicationController
     end
   end
 
+
   def show
     @user = User.find(params[:id])
   end
+
 
   def destroy
     @user = User.find(params[:id])
@@ -29,7 +31,8 @@ class UsersController < ApplicationController
     flash[:success] = '退会完了'
     redirect_to root_url
   end
-  
+
+
   private
   
   def user_params

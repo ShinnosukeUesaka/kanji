@@ -35,6 +35,7 @@ class Progress < ApplicationRecord
     
     
     previous_interval = (self.previous_due_date..self.due_date).count
+    actual_interval = (self.previous_due_date..get_today).count
     
     if self.learning_mode == true #初期学習 or 間違えて学び直しの場合
       self.learning_mode_n += 1
@@ -64,12 +65,11 @@ class Progress < ApplicationRecord
         new_interval = [(previous_interval*1.2).floor, previous_interval + 1].max # all new intervals (except Again) will always be at least one day longer than the previous interval.
         next_e_factor = [self.e_factor - 15, Settings.minimum_e_factor].max
       when 'good' then
-        new_interval = [(previous_interval*decimal_efactor).floor,previous_interval + 1].max 
+        new_interval = [(actual_interval*decimal_efactor).floor, actual_interval + 1].max 
         next_e_factor = self.e_factor
       when 'easy' then 
-        new_interval = [(previous_interval*decimal_efactor*Settings.Settings.easy_bonus).floor, previous_interval + 1].max
+        new_interval = [(actual_interval*decimal_efactor*Settings.Settings.easy_bonus).floor, actual_interval + 1].max
         next_e_factor += 15
-    
     end
     
     

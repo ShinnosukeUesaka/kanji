@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include GetToday
   include SessionsHelper
   
   private
@@ -10,7 +11,7 @@ class ApplicationController < ActionController::Base
   end
   
   def require_user_admin
-    unless current_user.usertype == "admin"
+    unless current_user.usertype == 1
       redirect_to login_path
     end
   end

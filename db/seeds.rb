@@ -6,6 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+require 'date'
+
 (1..50).each do |number|
     (0..11).each do |level|
         unique_num = number.to_s + level.to_s
@@ -14,5 +16,7 @@
         Question.create(level: level, category: 2, kanji: "漢字(四字熟語)" + unique_num, yomi: "読み(四字熟語)" + unique_num, meaning: "意味(四字熟語)" + unique_num, ex_top: "例文前。。。。。(四字熟語)" + unique_num,ex_bottom: "例文後(四字熟語)。。。。。。。" + unique_num)
     end
 end
+
+Datedev.create(today: Date.today)
 
 #User.create(name: 'test', email: 'test@gmail.com', password: 'test', age: 0, usertype: 0)

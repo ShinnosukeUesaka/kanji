@@ -29,6 +29,8 @@ Rails.application.routes.draw do
   get 'quiz/finished'
   
   
+  post 'datedev', to: 'datedev#progress_oneday'
+  
   
   #scope :admin/ 
   resources :questions
