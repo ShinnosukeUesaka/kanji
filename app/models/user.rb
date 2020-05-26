@@ -56,7 +56,12 @@ class User < ApplicationRecord
     end
     
     
-    show_progresses.map {|progress| progress.show = true}
+    show_progresses do |progress| 
+      progress.show = true
+      progress.save
+    end
+    
+    
     
   end
   
@@ -65,6 +70,7 @@ class User < ApplicationRecord
     self.show_progresses.each do |progress|
       progress.update_progress
       progress.show = false
+      progress.save
     end
   end
     

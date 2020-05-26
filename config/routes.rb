@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   post 'plan/explanation', to: 'planpages#explanation'
   
   get 'quiz/question'
-  post 'quiz/answer', to: 'quiz#answerpage'
+  post 'quiz/answer'
   get 'quiz/finished'
   
   

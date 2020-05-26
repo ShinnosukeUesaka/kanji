@@ -37,18 +37,30 @@ class Progress < ApplicationRecord
     previous_interval = (self.previous_due_date..self.due_date).count
     actual_interval = (self.previous_due_date..get_today).count
     
-    if self.learning_mode == true #初期学習 or 間違えて学び直しの場合
-      self.learning_mode_n += 1
-      if self.learning_mode_n = self.user.setting.learning_mode_intervals.count
-        self.learning_mode = false
-        self.learning_mode_n = nil
-        
-        next_e_factor = self.e_factor
-        next_interval = self.interval_after_learning_mode
-        self.interval_after_learning_mode = false
-      else
-        next_e_factor = self.e_factor
+    if self.learning_mode == true #初期学習 or 間違えて学び直しの場合 (learning mode)
+      next_e_factor = self.e_factor
+      
+      case self.answer
+      when 'again', 'good_after_again' then
+        self.learning_mode_n = 0
         next_interval = self.user.setting.learning_mode_intervals[self.learning_mode_n]
+      when 'hard', 'good' then
+        self.learning_mode_n += 1
+        if self.learning_mode_n = self.user.setting.learning_mode_intervals.count
+          # learning mode 終わり
+          next_interval = self.interval_after_learning_mode
+          self.interval_after_learning_mode = nil
+          self.learning_mode = false
+          self.learning_mode_n = nil
+        else 
+          next_interval = self.user.setting.learning_mode_intervals[self.learning_mode_n]
+        end
+      when 'easy' then
+         # learning mode 終わり
+          next_interval = self.interval_after_learning_mode
+          self.interval_after_learning_mode = nil
+          self.learning_mode = false
+          self.learning_mode_n = nil
       end
 
     else #普通の復習の場合
@@ -80,8 +92,7 @@ class Progress < ApplicationRecord
     self.due_date = self.due_date + next_interval
     self.answer = nil
     
-    
-    
+    self.save
     
   end
   
@@ -91,7 +102,9 @@ class Progress < ApplicationRecord
     when 0..21 then
       self.category = 'young'
     else
-      self.category = 'matyre'
+      self.category = 'mature'
+    end
+    self.save
   end
   
 end
