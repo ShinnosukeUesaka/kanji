@@ -1,0 +1,7 @@
+<h1>Quiz#get</h1>
+<p>Find me in app/views/quiz/get.html.erb</p>
+<%= @question.ex_top + @question.yomi + @question.ex_bottom %>
+<%= button_to "Good", controller: 'quiz', action: "answer", params: {id: @question.id, answer: 'good'} class: 'btn' %>
+<%= button_to "Easy", controller: 'quiz', action: "answer", params: {id: @question.id, answer: 'easy'} class: 'btn' %>
+<%= button_to "Hard", controller: 'quiz', action: "answer", params: {id: @question.id, answer: 'hard'} class: 'btn' %>
+<%= button_to "Again", controller: 'quiz', action: "answer", params: {id: @question.id, answer: 'again'} class: 'btn' %>

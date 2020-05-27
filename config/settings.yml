@@ -1,0 +1,17 @@
+defaults: &defaults
+  cool:
+    saweet: nested settings
+  easy_bonus: 1.2
+  minimum_e_factor: 130
+  awesome_setting: <%= "Did you know 5 + 5 = #{5 + 5}?" %>
+
+
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
