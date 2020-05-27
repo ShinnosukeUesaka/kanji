@@ -23,4 +23,13 @@ class ApplicationController < ActionController::Base
       redirect_to login_path
     end
   end
+  
+  
+  def check_active_update_progresses
+    if current_user.active_today == false
+      current_user.acitve_today = true
+      current_user.save
+      current_user.set_daily_show_questions
+    end
+  end
 end

@@ -16,4 +16,8 @@ class Question < ApplicationRecord
   
   
   has_many :progresses
+  
+  
+  has_many :questions_kanjichar, class_name: 'KanjicharQuestion', foreign_key: 'question_id'
+  has_many :questions, through: :questions_kanjichar
 end

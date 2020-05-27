@@ -3,7 +3,7 @@ class Studyset < ApplicationRecord
   
   validates :level, uniqueness: { scope: :user_id }
   
-  def check_question(question)
+  def check_question_category(question)
     case question.category
     when "kaki" then
       return self.kaki_active

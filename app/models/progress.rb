@@ -82,6 +82,7 @@ class Progress < ApplicationRecord
       when 'easy' then 
         new_interval = [(actual_interval*decimal_efactor*Settings.Settings.easy_bonus).floor, actual_interval + 1].max
         next_e_factor += 15
+      end
     end
     
     
@@ -104,6 +105,7 @@ class Progress < ApplicationRecord
     else
       self.category = 'mature'
     end
+    
     self.save
   end
   

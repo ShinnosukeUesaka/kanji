@@ -33,7 +33,7 @@ class PlanpagesController < ApplicationController
       questions = Question.where(level: set.level)
       progresses = []
       questions.each do |question|
-        if set.check_question(question) == true
+        if set.check_question_category(question) == true
           # https://qiita.com/xhnagata/items/79184ded56158ea1b97a  BulkInsert
           progresses << question.progresses.build(user_id: current_user.id, e_factor: current_user.setting.init_e_factor)
           #logger.debug @progress.errors.inspect 

@@ -9,11 +9,13 @@ class User < ApplicationRecord
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
                     uniqueness: { case_sensitive: false }
+  #validates :active_true, presence: true
+  attribute :active_true, :boolean, default: 'false'
   has_secure_password
   
   enum usertype: { normal: 0, admin: 1}
   
-  has_one :setting, dependent: :destroy #??
+  has_one :setting, dependent: :destroy
   has_many :studysets, dependent: :destroy
   has_many :progresses, dependent: :destroy
   

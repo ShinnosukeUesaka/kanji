@@ -10,10 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_23_225302) do
+ActiveRecord::Schema.define(version: 2020_05_26_123303) do
 
   create_table "datedevs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.date "today"
+  end
+
+  create_table "kanjichar_questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "kanjichar_id"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["kanjichar_id"], name: "index_kanjichar_questions_on_kanjichar_id"
+    t.index ["question_id"], name: "index_kanjichar_questions_on_question_id"
+  end
+
+  create_table "kanjichars", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "kanji"
+    t.integer "level"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "progresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -88,6 +104,8 @@ ActiveRecord::Schema.define(version: 2020_05_23_225302) do
     t.integer "usertype"
   end
 
+  add_foreign_key "kanjichar_questions", "kanjichars"
+  add_foreign_key "kanjichar_questions", "questions"
   add_foreign_key "progresses", "questions"
   add_foreign_key "progresses", "users"
   add_foreign_key "settings", "users"

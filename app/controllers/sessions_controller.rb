@@ -32,6 +32,7 @@ class SessionsController < ApplicationController
       if @user.active_today == false
         @user.set_daily_show_questions
         @user.active_today = true
+        @user.save
       end
       
       return true
