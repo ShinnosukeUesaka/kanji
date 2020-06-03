@@ -1,25 +1,31 @@
 class QuizController < ApplicationController
   before_action :require_user_logged_in
   before_action :check_active_update_progresses
+  before_action :count_questions
   
   #TODO 出題の順番を制御する
   #TODO 書き以外の問題にも対応させる
   
   def question
-    @progress = current_user.show_progresses.where(answer: nil).take
-    if @question
+    # if @count_left_review != 0
+    #   @question = current_user.show_progresses.where(category: [:young, :mature]).where(answer: [nil, 'again']).take
+    # else if @count_left_new != 0
+    #   @question = current_user.show_progresses.where(category: [:new]).where(answer: [nil, 'again']).take
+    # else 
+      
+    #   redirect_to quiz_finished_url
+    # end
+    
+      @progress = current_user.progresses.take #仮テスト用
       @question = @progress.question
-    else
-      #出題する問題がなくなった場合
-      redirect_to quiz_finished_url
-    end
   end
 
   def answer
     #TODO: 不正な入力を防ぐ（session使う？）
-    @question = question.find(id: params[:id])
-    @question.answer = params[:answer]
-    @question.save
+    @progress = Progress.find(params[:id])
+    @progress.answer = params[:answer]
+    @progress.save
+    @question = @progress.question
   end
   
   def finished

@@ -1,5 +1,6 @@
 class Progress < ApplicationRecord
   require "date"
+  include GetToday
   
   enum category: { not_seen: 0, young: 1, mature: 2 }
   enum answer: { again: 0, hard: 1, good: 2, easy: 3, good_after_again: 4 }
@@ -15,9 +16,14 @@ class Progress < ApplicationRecord
   attribute :learning_mode,        :boolean, default: true
   attribute :learning_mode_n,        :integer, default: 0
   
+  scope :active, -> { where(active: true) }
+  scope :due, -> { where(active: true).where('due_date <= ?', get_today) }
+  scope :show, -> { where(active: true).where(show: true) }
+  
+  
   def decimal_e_factor
     return (self.e_factor/100).to_f
-  end 
+  end
   
   
   
@@ -32,8 +38,7 @@ class Progress < ApplicationRecord
       return
     end
     
-    
-    
+  
     previous_interval = (self.previous_due_date..self.due_date).count
     actual_interval = (self.previous_due_date..get_today).count
     
@@ -92,6 +97,7 @@ class Progress < ApplicationRecord
     self.previous_due_date = self.due_date
     self.due_date = self.due_date + next_interval
     self.answer = nil
+    self.show = false
     
     self.save
     

@@ -2,3 +2,10 @@
 <p>Find me in app/views/usertop/main.html.erb</p>
 <a></a>
 <%= button_to "Oneday", controller: 'datedev', action: "progress_oneday", class: 'btn' %>
+新規のこり <%= @count_left_new %>
+復習のこり <%= @count_left_review %>
+今日学習した漢字の数　<%= @count_total_new +  @count_total_review - @count_left_new - @count_left_review %>
+<br>
+
+（今日締め切りの漢字　<%#= @count_total_due %>）
+

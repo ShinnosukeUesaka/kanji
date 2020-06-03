@@ -1,7 +1,20 @@
 <h1>Quiz#get</h1>
 <p>Find me in app/views/quiz/get.html.erb</p>
 <%= @question.ex_top + @question.yomi + @question.ex_bottom %>
-<%= button_to "Good", controller: 'quiz', action: "answer", params: {id: @question.id, answer: 'good'} class: 'btn' %>
-<%= button_to "Easy", controller: 'quiz', action: "answer", params: {id: @question.id, answer: 'easy'} class: 'btn' %>
-<%= button_to "Hard", controller: 'quiz', action: "answer", params: {id: @question.id, answer: 'hard'} class: 'btn' %>
-<%= button_to "Again", controller: 'quiz', action: "answer", params: {id: @question.id, answer: 'again'} class: 'btn' %>
+
+<% if @progress.category == 'new' %>
+<%= button_to "Good", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'good'}, class: 'btn' %> 二度と出題されなくなる
+<%= button_to "Hard", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'hard'}, class: 'btn' %>
+<%= button_to "Again", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'again'}, class: 'btn' %>
+
+<% elsif @progress.answer == 'nil' %>
+<%= button_to "Good", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'good'}, class: 'btn' %>
+<%= button_to "Easy", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'easy'}, class: 'btn' %>
+<%= button_to "Hard", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'hard'}, class: 'btn' %>
+<%= button_to "Again", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'again'}, class: 'btn' %>
+
+<% else %> <%# elsif @question.answer == 'again' %>
+<%= button_to "Good", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'good_after_again'}, class: 'btn' %>
+<%= button_to "Again", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'again'}, class: 'btn' %>
+<% end %>
+

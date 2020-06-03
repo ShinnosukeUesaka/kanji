@@ -1,4 +1,6 @@
 class PlanpagesController < ApplicationController
+  before_action :require_user_login
+  
   def firstpage
   end
 

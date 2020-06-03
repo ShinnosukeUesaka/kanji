@@ -5,13 +5,13 @@ namespace :update_progresses do
   task :active_users => :environment do
     User.where(active_today: true) do |user|
       user.update_progresses
-      user.update_attribute(active_true: false)
+      user.update_attribute(active_today: false)
     end
   end
   task :all_users => :environment do
     User.all.update_progresses do |user|
       user.update_progresses
-      user.update_attribute(active_true: false)
+      user.update_attribute(active_today: false)
     end
   end
 end

@@ -21,7 +21,8 @@ class User < ApplicationRecord
   
   has_many :active_progresses, -> { where(active: true) }, class_name: "Progress"
   has_many :show_progresses, -> { where(active: true).where(show: true) }, class_name: "Progress"
-  has_many :is_due_progresses, -> { where(active: true).where(due_date: Date.today) }, class_name: "Progress"
+  has_many :is_due_progresses, -> { where(active: true).where('due_date <= ?', get_today) }, class_name: "Progress"
+  
   has_many :questions, through: :progresses
   has_many :active_questions, through: :active_progresses, source: :question
   has_many :show_questions, through: :show_progresses, source: :question
@@ -40,7 +41,7 @@ class User < ApplicationRecord
       #期日の復習問題全てと
       #新規の問題を最大新規問題数までを出題
       show_progresses << self.is_due_progresses.where.not(categoery: 'new')
-      show_progresses << self.is_due_progresses.where(categoery: 'new').limit(self.setting.max_new_questions)
+      show_progresses << self.is_due_progresses.where(categoery: 'new').order(:due_date).limit(self.setting.max_new_questions)
     else
       
       #１日の最大合計問題数を設定した場合：
@@ -53,7 +54,7 @@ class User < ApplicationRecord
         n_new_progresses = [self.setting.max_new_questions - self.is_due_progresses.where.not(categoery: 'new').count, self.setting.max_new_questions].Min
         show_progresses << self.is_due_progresses.where(categoery: 'new').limit(n_new_progresses)
       else
-        show_progresses << self.is_due_progresses.where.not(categoery: 'new').limit(self.setting.max_total_questions)
+        show_progresses << self.is_due_progresses.where.not(categoery: 'new').order(:due_date).limit(self.setting.max_total_questions)
       end
     end
     
@@ -63,16 +64,12 @@ class User < ApplicationRecord
       progress.save
     end
     
-    
-    
   end
   
   #on nights when user logged in 
   def update_progresses()
     self.show_progresses.each do |progress|
       progress.update_progress
-      progress.show = false
-      progress.save
     end
   end
     

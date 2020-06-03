@@ -12,4 +12,5 @@ class DatedevController < ApplicationController
     
     redirect_back(fallback_location: root_path) #jsを使って画面遷移しない方法を実装する。
   end
+  
 end

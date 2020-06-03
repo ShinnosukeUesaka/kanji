@@ -4,6 +4,14 @@ class ApplicationController < ActionController::Base
   
   private
   
+  def count_questions
+    #@count_total_due = current_user.is_due_progresses.count
+    @count_total_new = current_user.show_progresses.where(category: [:new]).count
+    @count_total_review = current_user.show_progresses.where(category: [:young, :mature]).count
+    @count_left_new = current_user.show_progresses.where(category: [:new]).where(answer: [nil, 'again']).count
+    @count_left_review = current_user.show_progresses.where(category: [:young, :mature]).where(answer: [nil, 'again']).count
+  end
+  
   def require_user_correct(user)
     unless user == current_user
       redirect_to login_path
