@@ -1,4 +1,4 @@
 class ApplicationRecord < ActiveRecord::Base
-  include GetToday
+  extend GetToday
   self.abstract_class = true
 end

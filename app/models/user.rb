@@ -9,8 +9,7 @@ class User < ApplicationRecord
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
                     uniqueness: { case_sensitive: false }
-  #validates :active_true, presence: true
-  attribute :active_true, :boolean, default: 'false'
+  #validates :active_today, presence: true 
   has_secure_password
   
   enum usertype: { normal: 0, admin: 1}
@@ -34,14 +33,16 @@ class User < ApplicationRecord
   
   #when user logs in(only once a day) doesn't have to be everyday
   def set_daily_show_questions()
+    puts self.setting.max_new_questions
     show_progresses = []
     
-    if self.setting.max_total_questions == null
+    if self.setting.max_total_questions == nil
       #最大合計問題数を設定しなかった（なし）場合:
       #期日の復習問題全てと
       #新規の問題を最大新規問題数までを出題
-      show_progresses << self.is_due_progresses.where.not(categoery: 'new')
-      show_progresses << self.is_due_progresses.where(categoery: 'new').order(:due_date).limit(self.setting.max_new_questions)
+      puts 'test1'
+      show_progresses.concat(self.is_due_progresses.where.not(category: 'not_seen').to_a)
+      show_progresses.concat(self.is_due_progresses.where(category: 'not_seen').order(:due_date).limit(self.setting.max_new_questions).to_a)
     else
       
       #１日の最大合計問題数を設定した場合：
@@ -49,17 +50,20 @@ class User < ApplicationRecord
       #つまり、、、
       #出題する復習問題の数=Min(期日の復習問題の数、１日の最大合計問題数）
       #出題する新規問題の数=Min(１日の最大合計問題数ー期日の復習問題の数,　１日の最大新規問題数)
-      if self.setting.max_total_questions >= self.is_due_progresses.where.not(categoery: 'new').count
-        show_progresses << self.is_due_progresses.where.not(categoery: 'new')
-        n_new_progresses = [self.setting.max_new_questions - self.is_due_progresses.where.not(categoery: 'new').count, self.setting.max_new_questions].Min
-        show_progresses << self.is_due_progresses.where(categoery: 'new').limit(n_new_progresses)
+      if self.setting.max_total_questions >= self.is_due_progresses.where.not(category: 'not_seen').count
+        puts 'test2'
+        show_progresses.concat(self.is_due_progresses.where.not(category: 'not_seen').to_a)
+        n_new_progresses = [self.setting.max_new_questions - self.is_due_progresses.where.not(category: 'not_seen').count, self.setting.max_new_questions].min
+        puts n_new_progresses
+        show_progresses.concat(self.is_due_progresses.where(category: 'not_seen').limit(n_new_progresses).to_a)
       else
-        show_progresses << self.is_due_progresses.where.not(categoery: 'new').order(:due_date).limit(self.setting.max_total_questions)
+        puts 'test3'
+        show_progresses.concat(self.is_due_progresses.where.not(category: 'not_seen').order(:due_date).limit(self.setting.max_total_questions).to_a)
       end
     end
+    puts show_progresses.count
     
-    
-    show_progresses do |progress| 
+    show_progresses.each do |progress| 
       progress.show = true
       progress.save
     end

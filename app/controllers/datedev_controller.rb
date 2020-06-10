@@ -5,10 +5,21 @@ class DatedevController < ApplicationController
     require 'rake'
     Datedev.take.update(today: Datedev.take.today + 1)
     
-    #https://qiita.com/chatora_mikan/items/fda23646a37b91ac1716
-    Rails.application.load_tasks
-    Rake::Task['update_progresses:active_users'].execute
-    Rake::Task['update_progresses:active_users'].clear
+    #なぜか動かない。。
+    # app = Rake.application
+    # app.init
+    # # do this as many times as needed
+    # app.add_import 'lib/tasks/update_progresses.rake'
+    # # this loads the Rakefile and other imports
+    # app.load_rakefile
+    
+    # app['update_progresses:active_users'].invoke()
+    
+     User.where(active_today: true).each do |user|
+      user.update_progresses
+      user.update_attribute(:active_today, false)
+      puts user.active_today
+    end
     
     redirect_back(fallback_location: root_path) #jsを使って画面遷移しない方法を実装する。
   end

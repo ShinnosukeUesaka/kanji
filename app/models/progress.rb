@@ -13,12 +13,17 @@ class Progress < ApplicationRecord
   attribute :category, :integer,  default: 0
   attribute :active, :boolean,  default: true
   attribute :show,        :boolean, default: false
+  attribute :due_date,        :date, default: get_today
+  attribute :previous_due_date,     :date, default: get_today
   attribute :learning_mode,        :boolean, default: true
   attribute :learning_mode_n,        :integer, default: 0
   
   scope :active, -> { where(active: true) }
   scope :due, -> { where(active: true).where('due_date <= ?', get_today) }
   scope :show, -> { where(active: true).where(show: true) }
+  
+  
+  # TODO: private な　interval をチェックするメソッドを作る(DRY)
   
   
   def decimal_e_factor
@@ -43,30 +48,42 @@ class Progress < ApplicationRecord
     actual_interval = (self.previous_due_date..get_today).count
     
     if self.learning_mode == true #初期学習 or 間違えて学び直しの場合 (learning mode)
+    
       next_e_factor = self.e_factor
       
       case self.answer
-      when 'again', 'good_after_again' then
+      when 'again', 'good_after_again' then # やり直し
+        
         self.learning_mode_n = 0
         next_interval = self.user.setting.learning_mode_intervals[self.learning_mode_n]
+        
       when 'hard', 'good' then
         self.learning_mode_n += 1
         if self.learning_mode_n = self.user.setting.learning_mode_intervals.count
           # learning mode 終わり
-          next_interval = self.interval_after_learning_mode
-          self.interval_after_learning_mode = nil
+          if self.interval_after_learning_mode == nil
+            next_interval = actual_interval*self.e_factor
+          else
+            next_interval = self.interval_after_learning_mode
+            self.interval_after_learning_mode = nil
+          end
           self.learning_mode = false
           self.learning_mode_n = nil
         else 
           next_interval = self.user.setting.learning_mode_intervals[self.learning_mode_n]
         end
-      when 'easy' then
-         # learning mode 終わり
-          next_interval = self.interval_after_learning_mode
-          self.interval_after_learning_mode = nil
+        
+      when 'easy' then # learning mode 終わり
+          if self.interval_after_learning_mode == nil
+            next_interval = actual_interval*self.e_factor
+          else
+            next_interval = self.interval_after_learning_mode
+            self.interval_after_learning_mode = nil
+          end
           self.learning_mode = false
           self.learning_mode_n = nil
       end
+
 
     else #普通の復習の場合
       case self.answer 
@@ -85,14 +102,14 @@ class Progress < ApplicationRecord
         new_interval = [(actual_interval*decimal_efactor).floor, actual_interval + 1].max 
         next_e_factor = self.e_factor
       when 'easy' then 
-        new_interval = [(actual_interval*decimal_efactor*Settings.Settings.easy_bonus).floor, actual_interval + 1].max
+        new_interval = [(actual_interval*decimal_efactor*Settings.easy_bonus).floor, actual_interval + 1].max
         next_e_factor += 15
       end
     end
-    
-    
-    set_category(next_interval)
-    
+    puts 'hi'
+    puts next_interval
+    puts 'hi'
+    self.category = get_category(next_interval)
     self.e_factor = next_e_factor
     self.previous_due_date = self.due_date
     self.due_date = self.due_date + next_interval
@@ -103,16 +120,15 @@ class Progress < ApplicationRecord
     
   end
   
+  private
   
-  def set_category(interval)
+  def get_category(interval)
     case interval
     when 0..21 then
-      self.category = 'young'
+      return 'young'
     else
-      self.category = 'mature'
+      return'mature'
     end
-    
-    self.save
   end
   
 end

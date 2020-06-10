@@ -25,8 +25,10 @@ Rails.application.routes.draw do
   post 'plan/explanation', to: 'planpages#explanation'
   
   get 'quiz/question'
-  post 'quiz/answer'
+  get 'quiz/answer'
+  post 'quiz/post_answer'
   get 'quiz/finished'
+  
   
   
   post 'datedev', to: 'datedev#progress_oneday'

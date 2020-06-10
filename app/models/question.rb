@@ -9,6 +9,7 @@ class Question < ApplicationRecord
   validates :kanji, presence: true, length: { maximum: 10 }, uniqueness: { scope: [:ex_top, :ex_bottom] }
   validates :yomi, presence: true, length: { maximum: 10 }
   
+  
   attribute :meaning, :string,  default: ''
   attribute :ex_top, :string,  default: ''
   attribute :ex_buttom, :string,  default: ''

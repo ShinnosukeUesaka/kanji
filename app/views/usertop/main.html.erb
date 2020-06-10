@@ -1,11 +1,34 @@
-<h1>Usertop#main</h1>
-<p>Find me in app/views/usertop/main.html.erb</p>
-<a></a>
+
+<h1>ユーザーページ</h1>
+
+<div class="row">
+    <div class="col-sm-6">
+    <div>
+        進捗状況グラフ
+    </div>
+
+    新規のこり: <%= @count_left_new %>
+    復習のこり: <%= @count_left_review %>
+    今日学習した漢字の数：　<%= @count_total_new +  @count_total_review - @count_left_new - @count_left_review %>
+    <br>
+    <%= link_to "クイズ形式", quiz_question_path, class: 'btn btn-lg btn-outline-primary' %>
+    <br>
+    </div class="col-sm-6">
+    <div>
+        各級の学習設定
+    </div>
+    <br>
+    <%= link_to "その他設定", setting_path, class: "btn btn-sm, btn-outline-primary" %>
+    
+    </div>
+    
+</div>
+
+
+開発用：
 <%= button_to "Oneday", controller: 'datedev', action: "progress_oneday", class: 'btn' %>
-新規のこり <%= @count_left_new %>
-復習のこり <%= @count_left_review %>
-今日学習した漢字の数　<%= @count_total_new +  @count_total_review - @count_left_new - @count_left_review %>
-<br>
 
-（今日締め切りの漢字　<%#= @count_total_due %>）
-
+count_total_new: <%= @count_total_new %>
+count_total_review: <%= @count_total_review %>
+current_user.setting.max_total_questions: <%= current_user.setting.max_total_questions %>
+current_user.setting.max_new_questions: <%= current_user.setting.max_new_questions %>

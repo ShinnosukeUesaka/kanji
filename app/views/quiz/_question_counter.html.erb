@@ -1,0 +1,21 @@
+<%#= https://saruwakakun.com/html-css/basic/circle %>
+<style>
+  .circle{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: skyblue;/*背景色*/
+  text-align:center;
+  line-height: 80px;
+}
+</style>
+<div class='row'>
+    <div class='col'>
+        新規
+        <div class='circle'><%= count_left_new %></div>
+    </div>
+    <div class='col'>
+        復習
+        <div class='circle'><%= count_left_review %></div>
+    </div>
+</div>

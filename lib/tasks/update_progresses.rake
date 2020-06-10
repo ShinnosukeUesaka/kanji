@@ -3,15 +3,16 @@ namespace :update_progresses do
   #https://qiita.com/kyohei8/items/5a7d7db3838728a04140
   desc "update progresses(usually run everynight)"
   task :active_users => :environment do
-    User.where(active_today: true) do |user|
+    User.where(active_today: true).each do |user|
       user.update_progresses
-      user.update_attribute(active_today: false)
+      user.update_attribute(:active_today, false)
+      puts user.active_today
     end
   end
   task :all_users => :environment do
-    User.all.update_progresses do |user|
+    User.all.update_progresses.each do |user|
       user.update_progresses
-      user.update_attribute(active_today: false)
+      user.update_attribute(:active_today, false)
     end
   end
 end

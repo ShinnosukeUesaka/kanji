@@ -1,20 +1,9 @@
-<h1>Quiz#get</h1>
-<p>Find me in app/views/quiz/get.html.erb</p>
-<%= @question.ex_top + @question.yomi + @question.ex_bottom %>
+<%#= https://medium.com/@lh62594/passing-params-in-rails-75dcb94470c4 %>
+<center>
+<h1><%= @question.ex_top + @question.yomi + @question.ex_bottom %></h1>
 
-<% if @progress.category == 'new' %>
-<%= button_to "Good", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'good'}, class: 'btn' %> 二度と出題されなくなる
-<%= button_to "Hard", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'hard'}, class: 'btn' %>
-<%= button_to "Again", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'again'}, class: 'btn' %>
+<%= link_to "答え表示", quiz_answer_path(id: @progress.id), class: 'btn btn-lg btn-outline-primary' %>
 
-<% elsif @progress.answer == 'nil' %>
-<%= button_to "Good", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'good'}, class: 'btn' %>
-<%= button_to "Easy", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'easy'}, class: 'btn' %>
-<%= button_to "Hard", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'hard'}, class: 'btn' %>
-<%= button_to "Again", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'again'}, class: 'btn' %>
+<%= render 'question_counter', count_left_new: @count_total_new, count_left_review: @count_left_review %>
 
-<% else %> <%# elsif @question.answer == 'again' %>
-<%= button_to "Good", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'good_after_again'}, class: 'btn' %>
-<%= button_to "Again", controller: 'quiz', action: "answer", params: {id: @progress.id, answer: 'again'}, class: 'btn' %>
-<% end %>
-
+</center>
