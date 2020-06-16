@@ -4,6 +4,16 @@
 
 <%= link_to "答え表示", quiz_answer_path(id: @progress.id), class: 'btn btn-lg btn-outline-primary' %>
 
-<%= render 'question_counter', count_left_new: @count_total_new, count_left_review: @count_left_review %>
+<%= render 'question_counter', count_left_new: @count_left_new, count_left_review: @count_left_review %>
+開発用：<br>
+progress_id: <%= @progress.id %> <br>
+due_date: <%= @progress.due_date %> <br>
+learning_mode: <%= @progress.learning_mode %><br>
+learning_mode_n: <%= @progress.learning_mode_n %><br>
+category: <%= @progress.category %><br>
+interval_after_learning_mode: <%= @progress.interval_after_learning_mode %><br>
+answer: <%= @progress.answer %><br>
+e_factor: <%= @progress.efactor %><br>
+previous_answered_date": <%= @progress.previous_answered_date %><br>
 
 </center>

@@ -14,7 +14,7 @@ class Progress < ApplicationRecord
   attribute :active, :boolean,  default: true
   attribute :show,        :boolean, default: false
   attribute :due_date,        :date, default: get_today
-  attribute :previous_due_date,     :date, default: get_today
+  attribute :previous_answered_date,     :date, default: get_today
   attribute :learning_mode,        :boolean, default: true
   attribute :learning_mode_n,        :integer, default: 0
   
@@ -26,14 +26,14 @@ class Progress < ApplicationRecord
   # TODO: private な　interval をチェックするメソッドを作る(DRY)
   
   
-  def decimal_e_factor
-    return (self.e_factor/100).to_f
+  def decimal_efactor
+    return (self.efactor/100).to_f
   end
   
   
   
   def update_progress
-    # next_e_factor 次のeファクタ
+    # next_efactor 次のeファクタ
     # next_interval 次の復習間隔（日数）
     # これらをユーザーのリスポンスから設定
     # due_date を next_interval から計算
@@ -44,12 +44,12 @@ class Progress < ApplicationRecord
     end
     
   
-    previous_interval = (self.previous_due_date..self.due_date).count
-    actual_interval = (self.previous_due_date..get_today).count
+    previous_interval = (self.previous_answered_date..self.due_date).count - 1
+    actual_interval = (self.previous_answered_date..get_today).count - 1
     
     if self.learning_mode == true #初期学習 or 間違えて学び直しの場合 (learning mode)
     
-      next_e_factor = self.e_factor
+      next_efactor = self.efactor
       
       case self.answer
       when 'again', 'good_after_again' then # やり直し
@@ -58,24 +58,28 @@ class Progress < ApplicationRecord
         next_interval = self.user.setting.learning_mode_intervals[self.learning_mode_n]
         
       when 'hard', 'good' then
-        self.learning_mode_n += 1
-        if self.learning_mode_n = self.user.setting.learning_mode_intervals.count
-          # learning mode 終わり
+        
+        next_efactor = self.efactor
+        
+        if self.learning_mode_n == self.user.setting.learning_mode_intervals.count # learning mode 終わり
+          
           if self.interval_after_learning_mode == nil
-            next_interval = actual_interval*self.e_factor
+            next_interval = (actual_interval*decimal_efactor).floor
           else
             next_interval = self.interval_after_learning_mode
             self.interval_after_learning_mode = nil
           end
           self.learning_mode = false
           self.learning_mode_n = nil
+          
         else 
           next_interval = self.user.setting.learning_mode_intervals[self.learning_mode_n]
+          self.learning_mode_n += 1
         end
         
       when 'easy' then # learning mode 終わり
           if self.interval_after_learning_mode == nil
-            next_interval = actual_interval*self.e_factor
+            next_interval = (actual_interval*decimal_efactor).floor
           else
             next_interval = self.interval_after_learning_mode
             self.interval_after_learning_mode = nil
@@ -88,31 +92,35 @@ class Progress < ApplicationRecord
     else #普通の復習の場合
       case self.answer 
       when 'again', 'good_after_again' then
-        next_e_factor = [self.e_factor - 20, Settings.minimum_e_factor].max
+        next_efactor = self.efactor - 20
         # learning_mode の設定
-        self.interval_after_learning_mode = (previous_interval*next_e_factor).floor
+        self.interval_after_learning_mode = validate_interval((previous_interval*((next_efactor/100).to_f)).floor)
         self.learning_mode = true
         self.learning_mode_n = 0
         next_interval = self.user.setting.learning_mode_intervals[self.learning_mode_n]
         
       when 'hard' then
-        new_interval = [(previous_interval*1.2).floor, previous_interval + 1].max # all new intervals (except Again) will always be at least one day longer than the previous interval.
-        next_e_factor = [self.e_factor - 15, Settings.minimum_e_factor].max
+        next_interval = (previous_interval*1.2).floor 
+        next_efactor = self.efactor - 15
       when 'good' then
-        new_interval = [(actual_interval*decimal_efactor).floor, actual_interval + 1].max 
-        next_e_factor = self.e_factor
+        next_interval = (actual_interval*decimal_efactor).floor
+        next_efactor = self.efactor
       when 'easy' then 
-        new_interval = [(actual_interval*decimal_efactor*Settings.easy_bonus).floor, actual_interval + 1].max
-        next_e_factor += 15
+        next_interval = (actual_interval*decimal_efactor*Settings.easy_bonus).floor
+        next_efactor = self.efactor + 15
       end
+      
     end
-    puts 'hi'
-    puts next_interval
-    puts 'hi'
+    
+    next_efactor = validate_efactor(next_efactor)
+    if self.learning_mode == false 
+      next_interval = validate_interval(next_interval, actual_interval)
+    end
+    
     self.category = get_category(next_interval)
-    self.e_factor = next_e_factor
-    self.previous_due_date = self.due_date
-    self.due_date = self.due_date + next_interval
+    self.efactor = next_efactor
+    self.previous_answered_date = get_today
+    self.due_date = get_today + next_interval
     self.answer = nil
     self.show = false
     
@@ -131,4 +139,21 @@ class Progress < ApplicationRecord
     end
   end
   
+  def validate_interval(next_interval, actual_interval)
+    if next_interval < actual_interval + 1 # all new intervals (except Again) will always be at least one day longer than the previous interval.
+      return actual_interval+1
+    end
+    if next_interval > self.user.setting.max_interval && self.user.setting.max_interval!= nil
+      return self.user.setting.max_interval
+    end
+    return next_interval
+  end
+  
+  def validate_efactor(next_efactor)
+    puts next_efactor
+    if next_efactor < Settings.min_efactor
+      return Settings.min_efactor
+    end
+    return next_efactor
+  end
 end

@@ -32,36 +32,41 @@ class User < ApplicationRecord
   #https://qiita.com/QUANON/items/a58ff3960b43af472bfb
   
   #when user logs in(only once a day) doesn't have to be everyday
+  #TODO: 新規問題がなくなった時の処理
   def set_daily_show_questions()
-    puts self.setting.max_new_questions
     show_progresses = []
     
-    if self.setting.max_total_questions == nil
-      #最大合計問題数を設定しなかった（なし）場合:
-      #期日の復習問題全てと
-      #新規の問題を最大新規問題数までを出題
-      puts 'test1'
-      show_progresses.concat(self.is_due_progresses.where.not(category: 'not_seen').to_a)
-      show_progresses.concat(self.is_due_progresses.where(category: 'not_seen').order(:due_date).limit(self.setting.max_new_questions).to_a)
-    else
+    # if self.setting.max_total_questions == nil
+    #   #最大合計問題数を設定しなかった（なし）場合:
+    #   #期日の復習問題全てと
+    #   #新規の問題を最大新規問題数までを出題
+    #   puts 'test1'
+    #   n_review = self.is_due_progresses.where.not(category: 'not_seen').count
+    #   n_new = self.setting.max_new_questions
+    #   show_progresses.concat(self.is_due_progresses.where.not(category: 'not_seen').to_a)
+    #   show_progresses.concat(self.is_due_progresses.where(category: 'not_seen').order(:due_date).limit(self.setting.max_new_questions).to_a)
+    # else
       
-      #１日の最大合計問題数を設定した場合：
-      #新規問題より期日の復習問題を優先して出題し、１日の最大合計数を超える問題については次の日に回す。
-      #つまり、、、
-      #出題する復習問題の数=Min(期日の復習問題の数、１日の最大合計問題数）
-      #出題する新規問題の数=Min(１日の最大合計問題数ー期日の復習問題の数,　１日の最大新規問題数)
-      if self.setting.max_total_questions >= self.is_due_progresses.where.not(category: 'not_seen').count
-        puts 'test2'
-        show_progresses.concat(self.is_due_progresses.where.not(category: 'not_seen').to_a)
-        n_new_progresses = [self.setting.max_new_questions - self.is_due_progresses.where.not(category: 'not_seen').count, self.setting.max_new_questions].min
-        puts n_new_progresses
-        show_progresses.concat(self.is_due_progresses.where(category: 'not_seen').limit(n_new_progresses).to_a)
-      else
-        puts 'test3'
-        show_progresses.concat(self.is_due_progresses.where.not(category: 'not_seen').order(:due_date).limit(self.setting.max_total_questions).to_a)
-      end
-    end
-    puts show_progresses.count
+    #   #１日の最大合計問題数を設定した場合：
+    #   #新規問題より期日の復習問題を優先して出題し、１日の最大合計数を超える問題については別の日に回す。
+    #   #つまり、、、
+    #   #出題する復習問題の数=Min(期日の復習問題の数、１日の最大合計問題数）
+    #   #出題する新規問題の数=Min(１日の最大合計問題数ー期日の復習問題の数,　１日の最大新規問題数)
+    #   n_review = 
+    #   if self.setting.max_total_questions >= self.is_due_progresses.where.not(category: 'not_seen').count
+    #     puts 'test2'
+    #     show_progresses.concat(self.is_due_progresses.where.not(category: 'not_seen').to_a)
+    #     n_new_progresses = [self.setting.max_total_questions - self.is_due_progresses.where.not(category: 'not_seen').count, self.setting.max_new_questions].min
+    #     puts 'new count' + n_new_progresses.to_s
+    #     show_progresses.concat(self.is_due_progresses.where(category: 'not_seen').limit(n_new_progresses).to_a)
+    #   else
+    #     puts 'test3'
+    #     show_progresses.concat(self.is_due_progresses.where.not(category: 'not_seen').order(:due_date).limit(self.setting.max_total_questions).to_a)
+    #   end
+    # end
+    
+    show_progresses.concat(self.is_due_progresses.where(category: 'not_seen').limit(self.setting.max_new_questions).to_a)
+    show_progresses.concat(self.is_due_progresses.where.not(category: 'not_seen').order(:due_date).limit(self.setting.max_review_questions).to_a)
     
     show_progresses.each do |progress| 
       progress.show = true

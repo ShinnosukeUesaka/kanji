@@ -3,6 +3,12 @@ class DatedevController < ApplicationController
   
   def progress_oneday
     require 'rake'
+    User.where(active_today: true).each do |user|
+      user.update_progresses
+      user.update_attribute(:active_today, false)
+      puts user.active_today
+    end
+    
     Datedev.take.update(today: Datedev.take.today + 1)
     
     #なぜか動かない。。
@@ -15,11 +21,7 @@ class DatedevController < ApplicationController
     
     # app['update_progresses:active_users'].invoke()
     
-     User.where(active_today: true).each do |user|
-      user.update_progresses
-      user.update_attribute(:active_today, false)
-      puts user.active_today
-    end
+     
     
     redirect_back(fallback_location: root_path) #jsを使って画面遷移しない方法を実装する。
   end

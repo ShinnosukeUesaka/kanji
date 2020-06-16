@@ -13,10 +13,8 @@ class QuizController < ApplicationController
     
     
     if @count_left_review != 0
-      puts 'hi'
       @progress = current_user.show_progresses.where(category: [:young, :mature]).where(answer: [nil, 'again']).take
     elsif @count_left_new != 0
-      puts 'hi'
       @progress = current_user.show_progresses.where(category: [:new]).where(answer: [nil, 'again']).take
     else
       redirect_to quiz_finished_url and return
@@ -26,9 +24,6 @@ class QuizController < ApplicationController
   end
 
   def answer
-    
-    puts 'hi'
-    puts params[:id]
     @progress = Progress.find(params[:id])
     @question = @progress.question
   end

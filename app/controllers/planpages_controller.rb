@@ -18,7 +18,7 @@ class PlanpagesController < ApplicationController
   def explanation
     
     # user.settingの作成
-    @setting = current_user.build_setting(params.require(:setting).permit(:max_new_questions, :max_total_questions, :init_e_factor, :auto_init_e_factor))
+    @setting = current_user.build_setting(params.require(:setting).permit(:max_new_questions, :max_review_questions, :init_efactor, :auto_init_efactor, :max_interval))
     @setting.learning_mode_intervals = Settings.default_learning_mode_intervals
     @setting.save
     puts @setting.errors.full_messages
@@ -35,7 +35,7 @@ class PlanpagesController < ApplicationController
         questions.each do |question|
           if @study_set.check_question_category(question) == true
             # https://qiita.com/xhnagata/items/79184ded56158ea1b97a  BulkInsert
-            progresses << question.progresses.build(user_id: current_user.id, e_factor: current_user.setting.init_e_factor, category: 'not_seen')
+            progresses << question.progresses.build(user_id: current_user.id, efactor: current_user.setting.init_efactor, category: 'not_seen')
             #logger.debug @progress.errors.inspect 
           end
         end

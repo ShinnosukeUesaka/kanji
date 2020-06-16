@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_123303) do
+ActiveRecord::Schema.define(version: 2020_06_16_024221) do
 
   create_table "datedevs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.date "today"
@@ -39,12 +39,12 @@ ActiveRecord::Schema.define(version: 2020_05_26_123303) do
     t.integer "category"
     t.boolean "learning_mode"
     t.integer "learning_mode_n"
-    t.integer "e_factor"
+    t.integer "efactor"
     t.boolean "show"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "due_date"
-    t.date "previous_due_date"
+    t.date "previous_answered_date"
     t.integer "answer"
     t.integer "interval_after_learning_mode"
     t.index ["question_id"], name: "index_progresses_on_question_id"
@@ -67,13 +67,14 @@ ActiveRecord::Schema.define(version: 2020_05_26_123303) do
 
   create_table "settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
-    t.integer "init_e_factor"
-    t.boolean "auto_init_e_factor"
+    t.integer "init_efactor"
+    t.boolean "auto_init_efactor"
     t.string "learning_mode_intervals"
     t.integer "max_new_questions"
-    t.integer "max_total_questions"
+    t.integer "max_review_questions"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "max_interval"
     t.index ["user_id"], name: "index_settings_on_user_id"
   end
 

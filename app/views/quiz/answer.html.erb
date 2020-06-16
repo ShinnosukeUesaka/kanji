@@ -1,0 +1,23 @@
+<center>
+    
+<h1><%= @question.kanji%></h1>
+<h4><%= @question.meaning %></h4>
+
+<% if @progress.answer == 'again' %>　<%#= その日に間違えた問題 %>
+<%= button_to "Good", controller: 'quiz', action: "post_answer", params: {id: @progress.id, answer: 'good_after_again'}, class: 'btn btn-sm btn-outline-primary' %>
+<%= button_to "Again", controller: 'quiz', action: "post_answer", params: {id: @progress.id, answer: 'again'}, class: 'btn btn-sm btn-outline-primary' %>
+
+<% elsif @progress.category == 'not_seen' %><%#= 新規学習 %>
+<%= button_to "Good", controller: 'quiz', action: "post_answer", params: {id: @progress.id, answer: 'good'}, class: 'btn btn-sm btn-outline-primary' %>
+<%= button_to "Easy", controller: 'quiz', action: "post_answer", params: {id: @progress.id, answer: 'easy'}, class: 'btn btn-sm btn-outline-primary' %> <%#=二度と出題されなくなる =%>
+<%= button_to "Again", controller: 'quiz', action: "post_answer", params: {id: @progress.id, answer: 'again'}, class: 'btn btn-sm btn-outline-primary' %>
+
+<% else %><%#= 復習問題 %>
+<%= button_to "Good", controller: 'quiz', action: "post_answer", params: {id: @progress.id, answer: 'good'}, class: 'btn btn-sm btn-outline-primary' %>
+<%= button_to "Easy", controller: 'quiz', action: "post_answer", params: {id: @progress.id, answer: 'easy'}, class: 'btn btn-sm btn-outline-primary' %>
+<%= button_to "Hard", controller: 'quiz', action: "post_answer", params: {id: @progress.id, answer: 'hard'}, class: 'btn btn-sm btn-outline-primary' %>
+<%= button_to "Again", controller: 'quiz', action: "post_answer", params: {id: @progress.id, answer: 'again'}, class: 'btn btn-sm btn-outline-primary' %>
+
+<% end %> 
+</center>
+
