@@ -9,7 +9,7 @@ class User < ApplicationRecord
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
                     uniqueness: { case_sensitive: false }
-  #validates :active_today, presence: true 
+  validates :active_today, inclusion: {in: [true, false]}
   has_secure_password
   
   enum usertype: { normal: 0, admin: 1}
