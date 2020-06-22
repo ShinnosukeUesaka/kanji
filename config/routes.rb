@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'test/question'
+  get 'test/answer'
+  get 'test/finished'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   
   root 'usertop#main'
@@ -24,10 +27,15 @@ Rails.application.routes.draw do
   get 'plan/levels', to: 'planpages#nonkanken'
   post 'plan/explanation', to: 'planpages#explanation'
   
+  
   get 'quiz/question'
   get 'quiz/answer'
   post 'quiz/post_answer'
   get 'quiz/finished'
+  
+  get 'test/question'
+  get 'test/answer'
+  post 'quiz/finished'
   
   
   

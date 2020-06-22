@@ -39,10 +39,7 @@ class Progress < ApplicationRecord
     # due_date を next_interval から計算
 
     # ユーザーが問題に答えなかった場合は何もしない
-    if self.answer == nil
-      return
-    end
-    
+    return unless self.answer
   
     previous_interval = (self.previous_answered_date..self.due_date).count - 1
     actual_interval = (self.previous_answered_date..get_today).count - 1
@@ -143,10 +140,10 @@ class Progress < ApplicationRecord
     if next_interval < actual_interval + 1 # all new intervals (except Again) will always be at least one day longer than the previous interval.
       return actual_interval+1
     end
-    if next_interval > self.user.setting.max_interval && self.user.setting.max_interval!= nil
+    if next_interval > self.user.setting.max_interval && self.user.setting.max_interval
       return self.user.setting.max_interval
     end
-    return next_interval
+    next_interval
   end
   
   def validate_efactor(next_efactor)
@@ -154,6 +151,6 @@ class Progress < ApplicationRecord
     if next_efactor < Settings.min_efactor
       return Settings.min_efactor
     end
-    return next_efactor
+    next_efactor
   end
 end

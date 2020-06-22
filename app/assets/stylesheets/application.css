@@ -13,3 +13,21 @@
  *= require_tree .
  *= require_self
  */
+.navbar-custom {
+    background-color: #0845a6;
+    min-height: 80px;
+}
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: White;
+}
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+    color: White;
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: White;
+}

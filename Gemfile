@@ -45,7 +45,7 @@ gem 'activerecord-import'
 gem 'jquery-rails'
 gem 'settingslogic'
 gem 'whenever', require: false
-
+gem 'pry-byebug', group: :development
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

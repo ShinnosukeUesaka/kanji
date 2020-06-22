@@ -7,7 +7,7 @@
     <div class='col-sm-6 offset-sm-3'>
         <%= form_with(model: @user, local: true) do |f| %>
         <%= render 'layouts/error_messages', model: f.object %>
-            <%= f.hidden_field :active_today, :value => false %>
+            <%= f.hidden_field :active_today, :value => "false" %>
             <div class='form-group'>
                 <%= f.label :name, "Name" %>
                 <%= f.text_field :name, class: 'form-control'%>
@@ -34,6 +34,7 @@
             </div>
             <%= f.submit 'Sign Up', class: 'btn btn-primary btn-block' %>
         <% end %>
+
         
         <p><%= link_to 'Log in', login_path %></p>
         

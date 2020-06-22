@@ -3,7 +3,7 @@
 
 <div class="row">
     <div class="col-sm-6">
-    <div>
+    <div style="height: 300px; width: 300px">
         進捗状況グラフ
     </div>
 
@@ -11,14 +11,23 @@
     復習のこり: <%= @count_left_review %>
     今日学習した漢字の数：　<%= @count_total_new +  @count_total_review - @count_left_new - @count_left_review %>
     <br>
-    <%= link_to "クイズ形式", quiz_question_path, class: 'btn btn-lg btn-outline-primary' %>
+    <div class="row" style="height: 100%">
+        <div class="col-sm">
+            <%= link_to "クイズ形式", quiz_question_path, class: 'btn btn-lg btn-outline-primary', style: 'width: 100%'  %>
+        </div>
+        <div class="col-sm">
+            <%= link_to "テスト形式", test_question_path, class: 'btn btn-lg btn-outline-primary',  style: 'width: 100%'  %>
+        </div>
+    </div>
+    
     <br>
     </div class="col-sm-6">
     <div>
         各級の学習設定
     </div>
-    <br>
     <%= link_to "その他設定", setting_path, class: "btn btn-sm, btn-outline-primary" %>
+    <br>
+    
     
     </div>
     

@@ -1,8 +1,12 @@
 <%#= https://medium.com/@lh62594/passing-params-in-rails-75dcb94470c4 %>
 <center>
-<h1><%= @question.ex_top + @question.yomi + @question.ex_bottom %></h1>
+<div class="qcard">
+    <p><%= @question.ex_top + @question.yomi + @question.ex_bottom %></h1>
+</div> 
+
 
 <%= link_to "答え表示", quiz_answer_path(id: @progress.id), class: 'btn btn-lg btn-outline-primary' %>
+
 
 <%= render 'question_counter', count_left_new: @count_left_new, count_left_review: @count_left_review %>
 開発用：<br>
@@ -17,3 +21,18 @@ e_factor: <%= @progress.efactor %><br>
 previous_answered_date": <%= @progress.previous_answered_date %><br>
 
 </center>
+
+<div class="box">
+    <div class="percent">
+        <svg>
+            <circle cx="70" cy="70" r="70"></circle>
+            
+        </svg>
+        <div class="number">
+            <h2>
+                87%
+            </h2>
+            <h2 class="text">Progress</h2>
+        </div>
+    </div>
+</div>

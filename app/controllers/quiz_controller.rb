@@ -7,11 +7,6 @@ class QuizController < ApplicationController
   #TODO 書き以外の問題にも対応させる
   
   def question
-    # @progress = current_user.progresses.take #仮テスト用
-    
-      
-    
-    
     if @count_left_review != 0
       @progress = current_user.show_progresses.where(category: [:young, :mature]).where(answer: [nil, 'again']).take
     elsif @count_left_new != 0

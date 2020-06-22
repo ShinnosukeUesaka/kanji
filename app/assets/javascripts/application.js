@@ -15,3 +15,8 @@
 //= require activestorage
 //= require turbolinks
 //= require_tree .
+new CircleProgress('.progress', {
+	max: 100,
+	value: 40,
+	textFormat: 'percent',
+});
