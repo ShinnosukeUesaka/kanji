@@ -30,7 +30,9 @@ module Kanji
     # config/locales/配下の全てのrb, ymlファイルを読み込み対象とする
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
     
+    
     config.autoload_paths << Rails.root.join("lib")
+    config.eager_load_paths += %W(#{Rails.root}/lib/pdf)
     
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

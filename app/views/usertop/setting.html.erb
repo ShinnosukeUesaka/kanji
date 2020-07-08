@@ -1,2 +1,9 @@
 <h1>Usertop#setting</h1>
 <p>Find me in app/views/usertop/setting.html.erb</p>
+開発用：
+<%= button_to "Oneday", controller: 'datedev', action: "progress_oneday", class: 'btn' %>
+
+count_total_new: <%= @count_total_new %>
+count_total_review: <%= @count_total_review %>
+current_user.setting.max_review_questions: <%= current_user.setting.max_review_questions %>
+current_user.setting.max_new_questions: <%= current_user.setting.max_new_questions %>

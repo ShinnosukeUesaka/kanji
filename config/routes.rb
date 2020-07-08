@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :api do
+    get 'progresses/show'
+  end
   get 'test/question'
   get 'test/answer'
   get 'test/finished'
@@ -41,6 +44,9 @@ Rails.application.routes.draw do
   
   post 'datedev', to: 'datedev#progress_oneday'
   
+  namespace 'api' do
+    get 'progress', to: 'progresses#show'
+  end
   
   #scope :admin/ 
   resources :questions

@@ -1,43 +1,69 @@
-
-<h1>ユーザーページ</h1>
-
 <div class="row">
     <div class="col-sm-6">
-    <div style="height: 300px; width: 300px">
-        進捗状況グラフ
-    </div>
-
-    新規のこり: <%= @count_left_new %>
-    復習のこり: <%= @count_left_review %>
-    今日学習した漢字の数：　<%= @count_total_new +  @count_total_review - @count_left_new - @count_left_review %>
-    <br>
-    <div class="row" style="height: 100%">
-        <div class="col-sm">
-            <%= link_to "クイズ形式", quiz_question_path, class: 'btn btn-lg btn-outline-primary', style: 'width: 100%'  %>
-        </div>
-        <div class="col-sm">
-            <%= link_to "テスト形式", test_question_path, class: 'btn btn-lg btn-outline-primary',  style: 'width: 100%'  %>
+      <div style="height: 50px; width: 100%">
+          <canvas id="myChart"></canvas>
+      </div>
+  
+      新規のこり: <%= @count_left_new %>
+      復習のこり: <%= @count_left_review %>
+      今日学習した漢字の数：　<%= @count_total_new +  @count_total_review - @count_left_new - @count_left_review %>
+      <br>
+      <div class="row" style="height: 50px">
+          <div class="col-sm">
+              <%= link_to "クイズ形式", quiz_question_path, class: 'btn btn-lg btn-outline-primary', style: 'width: 100%; height: 100%'  %>
+          </div>
+          <div class="col-sm">
+              <%= link_to "テスト形式", test_question_path, class: 'btn btn-lg btn-outline-primary',  style: 'width: 100%'  %>
+          </div>
         </div>
     </div>
     
-    <br>
-    </div class="col-sm-6">
+    <div class="col-sm-6">
+    
     <div>
         各級の学習設定
     </div>
     <%= link_to "その他設定", setting_path, class: "btn btn-sm, btn-outline-primary" %>
     <br>
     
-    
     </div>
-    
 </div>
 
 
-開発用：
-<%= button_to "Oneday", controller: 'datedev', action: "progress_oneday", class: 'btn' %>
 
-count_total_new: <%= @count_total_new %>
-count_total_review: <%= @count_total_review %>
-current_user.setting.max_review_questions: <%= current_user.setting.max_review_questions %>
-current_user.setting.max_new_questions: <%= current_user.setting.max_new_questions %>
+<script>
+
+    var request = new XMLHttpRequest();
+ 
+    request.open('GET', '/api/progress', true);
+    request.responseType = 'json';
+ 
+    request.onload = function () {
+      var data = this.response;
+      console.log(data);
+      
+      var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'doughnut',
+    
+        // The data for our dataset
+        data: {
+            labels: ['未学習', '学習中', '完了'],
+            datasets: [{
+                label: 'My First dataset',
+                backgroundColor: ['#182a8f', '#7ae64c', '#009427'],
+                //borderColor: 'rgb(255, 99, 132)',
+                data: [data.not_seen, data.young, data.mature]
+            }]
+        },
+    
+        // Configuration options go here
+        options: {}
+    });
+    };
+     
+    request.send();
+    
+    
+</script>
