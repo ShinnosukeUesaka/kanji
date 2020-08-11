@@ -36,4 +36,5 @@ class QuizController < ApplicationController
   end
   
   
+  
 end

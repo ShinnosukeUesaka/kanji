@@ -1,8 +1,8 @@
 <%#= https://medium.com/@lh62594/passing-params-in-rails-75dcb94470c4 %>
 <center>
 <div class="qcard">
-    <p><%= @question.ex_top + @question.yomi + @question.ex_bottom %></h1>
-</div> 
+    <p><%= full_mondai %></p>
+</div>
 
 
 <%= link_to "答え表示", quiz_answer_path(id: @progress.id), class: 'btn-square-shadow mt-5' %>

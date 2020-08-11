@@ -1,16 +1,19 @@
 <div class="row">
     <div class="col-sm-6">
-      <div style="height: 50px; width: 100%">
-          <canvas id="myChart"></canvas>
+      <div style="width: 100%">
+          <div class="picard">
+            <canvas id="myChart"></canvas>
+          </div>
+
       </div>
   
       新規のこり: <%= @count_left_new %>
       復習のこり: <%= @count_left_review %>
       今日学習した漢字の数：　<%= @count_total_new +  @count_total_review - @count_left_new - @count_left_review %>
       <br>
-      <div class="row" style="height: 50px">
+      <div class="row">
           <div class="col-sm">
-              <%= link_to "クイズ形式", quiz_question_path, class: 'btn btn-lg btn-outline-primary', style: 'width: 100%; height: 100%'  %>
+              <%= link_to "クイズ形式", quiz_question_path, class: 'btn btn-lg btn-outline-primary', style: 'width: 100%'  %>
           </div>
           <div class="col-sm">
               <%= link_to "テスト形式", test_question_path, class: 'btn btn-lg btn-outline-primary',  style: 'width: 100%'  %>

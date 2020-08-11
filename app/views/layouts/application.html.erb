@@ -19,11 +19,12 @@
   </head>
   
   <body style="background-color: #f5f0eb">
+    <%= render 'layouts/navbar' %>
     <div class="container">
       <%= render 'layouts/flash_messages' %>
+      <%= yield %>
     </div>
-    <%= render 'layouts/navbar' %>
-    <%= yield %>
+
   </body>
 </html>
 

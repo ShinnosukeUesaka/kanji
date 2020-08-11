@@ -1,3 +1,17 @@
 // Place all the styles related to the usertop controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.picard{
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: White;
+  min-height: 100px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.2);
+  padding: 25px;
+  width: 100%;
+}
+
+.picard > p{
+    font-size: 50px;
+    text-align: center;
+}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_16_024221) do
+ActiveRecord::Schema.define(version: 2020_07_29_074236) do
 
   create_table "datedevs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.date "today"
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 2020_06_16_024221) do
     t.string "ex_bottom"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["kanji", "ex_top", "ex_bottom"], name: "index_questions_on_kanji_and_ex_top_and_ex_bottom", unique: true
+    t.index ["kanji", "ex_top", "level", "category"], name: "index_questions_on_kanji_and_ex_top_and_level_and_category", unique: true
   end
 
   create_table "settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

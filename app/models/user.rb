@@ -2,17 +2,17 @@ class User < ApplicationRecord
   require 'date'
   
   enum kanken_level: { one: 0, pre_one: 1, two: 2,  pre_two: 3, three: 4, four: 5, five: 6 , six: 7 , seven: 8 , eight: 9 , nine: 10 , ten: 11}
-  
+  enum usertype: { normal: 0, admin: 1}
   
   before_save { self.email.downcase! }
   validates :name, presence: true, length: { maximum: 50 }
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
                     uniqueness: { case_sensitive: false }
-  validates :active_today, inclusion: {in: [true, false]}
+  validates :active_today, presence: true, inclusion: {in: [true, false]}
   has_secure_password
   
-  enum usertype: { normal: 0, admin: 1}
+ 
   
   has_one :setting, dependent: :destroy
   has_many :studysets, dependent: :destroy
@@ -67,6 +67,7 @@ class User < ApplicationRecord
     
     show_progresses.concat(self.is_due_progresses.where(category: 'not_seen').limit(self.setting.max_new_questions).to_a)
     show_progresses.concat(self.is_due_progresses.where.not(category: 'not_seen').order(:due_date).limit(self.setting.max_review_questions).to_a)
+  
     
     show_progresses.each do |progress| 
       progress.show = true
