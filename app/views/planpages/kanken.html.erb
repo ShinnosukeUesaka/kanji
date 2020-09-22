@@ -28,29 +28,25 @@
         <%= s.fields_for Studyset.create do |l| %>
           <%= hidden_field_tag :level, lev_num, name: "studysets[#{lev_num}][level]" %>
           <%= hidden_field_tag :active, true, name: "studysets[#{lev_num}][active]"%>
-          <!--
-            <div class="form-horizontal">
-              <div class="form-group">
-                <%= l.label :create, lev_name, class: 'control-label col-xs-2'  %>
-                <%= l.check_box :create, {checked: true, name: "studysets[#{lev_num}][create]", class: 'from-control'}, "true", "false" %>
-              </div>
-              <div class="form-group">
-                <%= l.label :yomi_active, '読み', class: 'control-label col-xs-4' %>
-                <%= l.check_box :yomi_active, {checked: true, name: "studysets[#{lev_num}][yomi_active]"}, "true", "false" %>
-              </div>
-            </div>
-          -->
           
           
-          <%= l.label :create, lev_name  %>
-          <%= l.check_box :create, {checked: false, name: "studysets[#{lev_num}][create]"}, "true", "false"  %>
-          <%= l.label :yomi_active, '読み' %>
-          <%= l.check_box :yomi_active, {checked: false, name: "studysets[#{lev_num}][yomi_active]"}, "true", "false" %>
-          <%= l.label :kaki_active, '書き' %>
-          <%= l.check_box :kaki_active, {checked: false, name: "studysets[#{lev_num}][kaki_active]"},"true", "false" %>
-          <%= l.label :yoji_active, '四字熟語' %>
-          <%= l.check_box :yoji_active, {checked: false, name: "studysets[#{lev_num}][yoji_active]"}, "true", "false" %>
-          <br>
+          
+          
+          <%= l.check_box :create, {checked: false, name: "studysets[#{lev_num}][create]", class: "level_checkbox", id: "checkbox[#{lev_num}]"}, "true", "false"  %>
+
+          <%= l.label :create, lev_name, {for: "checkbox[#{lev_num}]", class: "planlabel"} %>
+          <div class="ml-5 options"%>
+            
+            <%= l.check_box :yomi_active, {checked: false, name: "studysets[#{lev_num}][yomi_active]", id: "option1[#{lev_num}]"}, "true", "false" %>
+            <%= l.label :yomi_active, '読み', {for: "option1[#{lev_num}]",  class: "planlabel"} %>
+            
+            <%= l.check_box :kaki_active, {checked: false, name: "studysets[#{lev_num}][kaki_active]", id: "option2[#{lev_num}]"},"true", "false" %>
+            <%= l.label :kaki_active, '書き', {for: "option2[#{lev_num}]",  class: "planlabel"} %>
+            
+            <%= l.check_box :yoji_active, {checked: false, name: "studysets[#{lev_num}][yoji_active]", id: "option3[#{lev_num}]"}, "true", "false" %>
+            <%= l.label :yoji_active, '四字熟語', {for: "option3[#{lev_num}]",  class: "planlabel"} %>
+          </div>
+
         <% end %>
       <% end %>
     <% end %>
@@ -74,8 +70,5 @@
     <%= link_to '戻る', plan_select_path, class: 'btn btn-sm btn-outline-primary' %><%= f.submit '学習を始める', class: 'btn btn-lg btn-outline-primary' %>
  
 <% end %>
-  
-    
-  
-  
-  
+
+

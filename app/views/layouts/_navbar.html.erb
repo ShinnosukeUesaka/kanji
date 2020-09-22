@@ -1,7 +1,7 @@
 
 <header class="mb-4">
   <nav class="navbar navbar-expand-sm navbar-custom">
-    <a class="navbar-brand ml-4" style="font-size: 30px" href="/">Kanji</a>
+    <a class="navbar-brand ml-4" style="font-size: 30px" href="/">漢字道場</a>
     <% if Rails.env.development? %>
     <a class="navbar-brand" href="/"><%= get_today %></a>
     <% end %>
@@ -17,10 +17,10 @@
         <% if @current_user.usertype == "admin" %>
           <li class="nav-item"><%= link_to  '問題を追加（管理者用）', new_question_path, class: 'nav-link' %></li>
         <% end %>
-        <li class="nav-item"><%= link_to  'Log out', logout_path, method: :delete, class: 'nav-link' %></li>
+        <li class="nav-item"><%= link_to  'ログアウト', logout_path, method: :delete, class: 'nav-link' %></li>
         <% else %>
         <li class="nav-item"><%= link_to  'Sign up', signup_path, class: 'nav-link' %></li>
-        <li class="nav-item"><%= link_to  'Log in', login_path, class: 'nav-link' %></li>
+        <li class="nav-item"><%= link_to  'ログアウト', login_path, class: 'nav-link' %></li>
         <% end %>
       </ul>
     </div>
