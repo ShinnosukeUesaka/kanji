@@ -10,7 +10,7 @@ class QuizController < ApplicationController
     if @count_left_review != 0
       @progress = current_user.show_progresses.where(category: [:young, :mature]).where(answer: [nil, 'again']).take
     elsif @count_left_new != 0
-      @progress = current_user.show_progresses.where(category: [:new]).where(answer: [nil, 'again']).take
+      @progress = current_user.show_progresses.where(category: [:not_seen]).where(answer: [nil, 'again']).take
     else
       redirect_to quiz_finished_url and return
     end
