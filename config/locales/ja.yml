@@ -3,5 +3,9 @@ ja:
     user:
       kanken_level:
         one: 一級
+        pre_one: 準一級
         two: 二級
+        pre_two: 準二級
+        three: 三級
+        four: 四級
  

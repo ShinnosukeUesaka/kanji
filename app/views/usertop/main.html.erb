@@ -1,13 +1,15 @@
 
-<div class="row" style="width: 100%">
-    <div class="col-8">
-        <div style="width: 100%">
+<script>
+showchart()
+</script>
+        <div style="width: 80%;" class="mx-auto">
             <div class="picard">
               
-              
+            
               <%= pi_selector %>
               
               <canvas id="myChart"></canvas>
+              
             </div>
   
         </div>
@@ -15,6 +17,7 @@
         <br>
      
         <div class='row'>
+          
         <div class='col-4 counter'>
           <p class='counter-num'><%= @count_left_new %></p>
           <p class='counter-label'>新規のこり</p>
@@ -27,54 +30,18 @@
           <p class='counter-num'><%= @count_total_new +  @count_total_review - @count_left_new - @count_left_review %></p>
           <p class='counter-label'>今日学習した漢字の数</p>
         </div>
+        
         </div>
       
       
-        <div class="row mt-3">
+        <div class="row my-3">
             <div class="col-sm">
-                <%= link_to "クイズ形式", quiz_question_path, class: 'btn btn-lg btn-outline-primary', style: 'width: 100%'  %>
+                <%= link_to "クイズ形式", quiz_question_path, class: 'btn btn-lg btn-outline-primary', style: 'width: 100%' %>
             </div>
             <div class="col-sm">
-                <%= link_to "テスト形式", test_question_path, class: 'btn btn-lg btn-outline-primary',  style: 'width: 100%'  %>
+                <%= link_to "テスト形式(工事中)", test_question_path, class: 'btn btn-lg btn-outline-primary disabled',  style: 'width: 100%', disabled: ''  %>
             </div>
         </div>
-          
-      
-    
-    </div>
-
-   
-    <div class="col-4">
-      <div class="tab-wrap">
-        <input id="TAB-01" type="radio" name="TAB" class="tab-switch" checked="checked" /><label class="tab-label" for="TAB-01">ボタン 1</label>
-        <div class="tab-content">
-            <div class="picard">
-              <canvas id="1kkyuuchar"></canvas>
-            </div>
-        </div>
-        <input id="TAB-02" type="radio" name="TAB" class="tab-switch" /><label class="tab-label" for="TAB-02">ボタン 2</label>
-        <div class="tab-content">
-            コンテンツ 2
-        </div>
-        <input id="TAB-03" type="radio" name="TAB" class="tab-switch" /><label class="tab-label" for="TAB-03">ボタン 3</label>
-        <div class="tab-content">
-            コンテンツ 3
-        </div>
-      </div>
-      
-       <%= link_to "その他設定", setting_path, class: "btn btn-sm, btn-outline-primary" %>
-       
-
-<p>When you select a new car, a function is triggered which outputs the value of the selected car.</p>
-
-<p id="demo"></p>
-       
-    </div>
-    
-
-   
-    <br>
-    
-    </div>
+          </div>
 </div>
 

@@ -2,8 +2,9 @@
 
 
 
-<%= form_with url: plan_explanation_path, local: true do |f| %>
 
+<%= form_with url: plan_explanation_path, local: true do |f| %>
+    
     
     <%#= 
     多重ネスト（fields for）
@@ -12,43 +13,42 @@
     https://qiita.com/roba4coding/items/c2bcd51d1d4200dd26d9
     #enum 日本語
     https://kimuraysp.hatenablog.com/entry/2016/05/19/233144 
+    #bootstrap form-horizontal
+    https://qiita.com/zaburo/items/8983993d173c51cb3827
     %>
     
-    <%= f.label :kanken_day, '実施日:' %>
-    <%= f.date_field :kanken_day %>
-    <%= f.label :kanken_level, '級' %>
-    <%= f.select :kanken_level, User.kanken_levels_i18n.invert, :selected=>User.kanken_levels[current_user.kanken_level_i18n] %>
-       
+    
     <br>
     <%= f.fields_for :studysets do |s| %>
       <% User.kanken_levels.each do |lev_name, lev_num| %>
+        <% if Settings.level_available.include?(lev_name) %>
+      
         <%= s.fields_for Studyset.create do |l| %>
+          
+          
           <%= hidden_field_tag :level, lev_num, name: "studysets[#{lev_num}][level]" %>
           <%= hidden_field_tag :active, true, name: "studysets[#{lev_num}][active]"%>
-          <!--
-            <div class="form-horizontal">
-              <div class="form-group">
-                <%= l.label :create, lev_name, class: 'control-label col-xs-2'  %>
-                <%= l.check_box :create, {checked: true, name: "studysets[#{lev_num}][create]", class: 'from-control'}, "true", "false" %>
-              </div>
-              <div class="form-group">
-                <%= l.label :yomi_active, '読み', class: 'control-label col-xs-4' %>
-                <%= l.check_box :yomi_active, {checked: true, name: "studysets[#{lev_num}][yomi_active]"}, "true", "false" %>
-              </div>
-            </div>
-          -->
           
           
-          <%= l.label :create, lev_name  %>
-          <%= l.check_box :create, {checked: true, name: "studysets[#{lev_num}][create]"}, "true", "false"  %>
-          <%= l.label :yomi_active, '読み' %>
-          <%= l.check_box :yomi_active, {checked: true, name: "studysets[#{lev_num}][yomi_active]"}, "true", "false" %>
-          <%= l.label :kaki_active, '書き' %>
-          <%= l.check_box :kaki_active, {checked: true, name: "studysets[#{lev_num}][kaki_active]"},"true", "false" %>
-          <%= l.label :yoji_active, '四字熟語' %>
-          <%= l.check_box :yoji_active, {checked: true, name: "studysets[#{lev_num}][yoji_active]"}, "true", "false" %>
-          <br>
+          <%= l.check_box :create, {checked: false, name: "studysets[#{lev_num}][create]", class: "level_checkbox", id: "checkbox[#{lev_num}]"}, "true", "false"  %>
+
+          <%= l.label :create, User.kanken_levels_i18n[User.kanken_levels.invert[lev_num]], {for: "checkbox[#{lev_num}]", class: "planlabel"} %>
+          <div class="ml-5 options"%>
+            
+            <%= l.check_box :yomi_active, {checked: false, name: "studysets[#{lev_num}][yomi_active]", id: "option1[#{lev_num}]"}, "true", "false" %>
+            <%= l.label :yomi_active, '読み', {for: "option1[#{lev_num}]",  class: "planlabel"} %>
+            
+            <%= l.check_box :kaki_active, {checked: false, name: "studysets[#{lev_num}][kaki_active]", id: "option2[#{lev_num}]"},"true", "false" %>
+            <%= l.label :kaki_active, '書き', {for: "option2[#{lev_num}]",  class: "planlabel"} %>
+            
+            <%= l.check_box :yoji_active, {checked: false, name: "studysets[#{lev_num}][yoji_active]", id: "option3[#{lev_num}]"}, "true", "false" %>
+            <%= l.label :yoji_active, '四字熟語', {for: "option3[#{lev_num}]",  class: "planlabel"} %>
+          </div>
+
         <% end %>
+        
+        <% end %>
+        
       <% end %>
     <% end %>
     <br>
@@ -57,17 +57,19 @@
       <%#= s.hidden_field :learning_mode_intervals, value: [1, 3] %>
     
       <%= s.label :max_new_questions, "１日の最大新規問題数" %>
-      <%= s.select :max_new_questions, 1..50 %>
-      <%= s.label :max_total_questions, "１日の最大合計問題数" %>
-      <%= s.select :max_total_questions, 1..50 %> <%#=TODO max_new_questions 以上しか選択できないようにする %>
+      <%= s.select :max_new_questions, 1..50, selected: 3 %>
+      <%= s.label :max_review_questions, "１日の最大復習問題数" %>
+      <%= s.select :max_review_questions, 1..50, selected: 10 %> 
       <%= s.label :init_e_factor, "復習頻度" %>
-      <%= s.select :init_e_factor, {"少ない" => 200, "普通" => 250,"多い" => 300 } %>
-      <%= s.label :auto_init_e_factor, "復習頻度自動調整" %>
-      <%= s.check_box :auto_init_e_factor, {}, "true", "false" %>
+      <%= s.select :init_efactor, {"少ない" => 200, "普通" => 250,"多い" => 300 } %>
+      <%= s.label :auto_init_efactor, "復習頻度自動調整" %>
+      <%= s.check_box :auto_init_efactor, {}, "true", "false" %>
+      <%= s.label :max_interval, "最大復習間隔" %>
+      <%= s.select :max_interval, 10..1000, selected: 50 %> 
     <% end %>
     <br>
     <%= link_to '戻る', plan_select_path, class: 'btn btn-sm btn-outline-primary' %><%= f.submit '学習を始める', class: 'btn btn-lg btn-outline-primary' %>
  
 <% end %>
-  
-    
+
+

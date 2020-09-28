@@ -25,16 +25,18 @@
     <br>
     <%= f.fields_for :studysets do |s| %>
       <% User.kanken_levels.each do |lev_name, lev_num| %>
+        <% if Settings.level_available.include?(lev_name) %>
+      
         <%= s.fields_for Studyset.create do |l| %>
+          
+          
           <%= hidden_field_tag :level, lev_num, name: "studysets[#{lev_num}][level]" %>
           <%= hidden_field_tag :active, true, name: "studysets[#{lev_num}][active]"%>
           
           
-          
-          
           <%= l.check_box :create, {checked: false, name: "studysets[#{lev_num}][create]", class: "level_checkbox", id: "checkbox[#{lev_num}]"}, "true", "false"  %>
 
-          <%= l.label :create, lev_name, {for: "checkbox[#{lev_num}]", class: "planlabel"} %>
+          <%= l.label :create, User.kanken_levels_i18n[User.kanken_levels.invert[lev_num]], {for: "checkbox[#{lev_num}]", class: "planlabel"} %>
           <div class="ml-5 options"%>
             
             <%= l.check_box :yomi_active, {checked: false, name: "studysets[#{lev_num}][yomi_active]", id: "option1[#{lev_num}]"}, "true", "false" %>
@@ -48,6 +50,9 @@
           </div>
 
         <% end %>
+        
+        <% end %>
+        
       <% end %>
     <% end %>
     <br>

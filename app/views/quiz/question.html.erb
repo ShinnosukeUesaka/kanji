@@ -9,7 +9,9 @@
 
 
 <%= render 'question_counter', count_left_new: @count_left_new, count_left_review: @count_left_review %>
-開発用：<br>
+
+<% if Rails.env.development? %>
+    開発用：<br>
 progress_id: <%= @progress.id %> <br>
 due_date: <%= @progress.due_date %> <br>
 learning_mode: <%= @progress.learning_mode %><br>
@@ -19,5 +21,8 @@ interval_after_learning_mode: <%= @progress.interval_after_learning_mode %><br>
 answer: <%= @progress.answer %><br>
 e_factor: <%= @progress.efactor %><br>
 previous_answered_date": <%= @progress.previous_answered_date %><br>
+    
+<% end %>
+
 
 </center>

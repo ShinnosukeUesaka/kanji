@@ -4,7 +4,7 @@
 const showchart = (level = null) => {
     var request = new XMLHttpRequest();
     
-    if (level == null) {
+    if (level == null || level == "") {
         request.open('GET', '/api/progress', true);
     }else{
        request.open('GET', '/api/progress?level=' + level, true);
@@ -40,11 +40,10 @@ const showchart = (level = null) => {
     request.send();
 }
 
-showchart()
+
 
 function myFunction() {
     var x = document.getElementById("piSelect").value;
-    document.getElementById("demo").innerHTML = "You selected: " + x;
     showchart(x)
 }
 

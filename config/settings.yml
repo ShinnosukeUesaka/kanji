@@ -10,6 +10,7 @@ defaults: &defaults
   default_learning_mode_intervals: [1, 3]
   awesome_setting: <%= "Did you know 5 + 5 = #{5 + 5}?" %>
   
+  level_available: ['two', 'pre_two', 'three']
 
 
 
