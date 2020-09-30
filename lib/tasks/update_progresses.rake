@@ -10,9 +10,11 @@ namespace :update_progresses do
     end
   end
   task :all_users => :environment do
-    User.all.update_progresses.each do |user|
+    User.all.each do |user|
       user.update_progresses
       user.update_attribute(:active_today, false)
     end
   end
 end
+
+
